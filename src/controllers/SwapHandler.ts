@@ -1,0 +1,1 @@
+// Based on events, swap candies, check if they match and destroy them.
