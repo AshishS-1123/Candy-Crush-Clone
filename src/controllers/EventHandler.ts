@@ -1,0 +1,1 @@
+// Handles events. select candies based on user inputs
