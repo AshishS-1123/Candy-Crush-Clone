@@ -1,0 +1,1 @@
+// After some candies are destroyed, this class will cause candies to move down.
