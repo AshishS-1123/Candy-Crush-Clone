@@ -3,57 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <title>Typescript App</title>
+    <style>
+      #background {
+        width: 600px;
+        height: 800px;
+
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      #canvasContainer {
+        width: 500px;
+        height: 700px;
+
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+
+        background-color: #e9feff;
+        opacity: 0.5;
+        border-radius: 20px;
+      }
+
+      #playField {
+        width: 500px;
+        height: 700px;
+
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;;
+      }
+    </style>
   </head>
+
   <body>
     <div id="main" class="main">
-      <canvas id="playField" width="1000" height="600"></canvas>
-      <img id="background" src="./images/background.png"></img>
-      <div id="display">
-        <div id="score"></div>
-        <button id="start">Start</button>
-        <div id="info">Press play!</div>
+      <div id="canvasContainer">
+        <canvas id="playField" width="1000" height="600"></canvas>
       </div>
+      <img id="background" src="./images/background.jpg"></img>
     </div>
     <script src="./index.ts"></script>
   </body>
-  <style>
-    :root {
-      --width: 1000px;
-      --height: 650px;
-    }
-
-    #main {
-      position: relative;
-      width: 1000px;
-      margin: 0 auto;
-      width: var(--width);
-      height: var(--height);
-      font-size: 32px;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    canvas {
-      position: absolute;
-      left: 0;
-      top: 0;
-      z-index: 10;
-      border-top: 1px solid grey;
-      border-left: 1px solid grey;
-      border-right: 1px solid grey;
-      margin-bottom: 40px;
-    }
-
-    #display {
-      position: absolute;
-      bottom: 0;
-      display: flex;
-      justify-content: space-between;
-      width: var(--width);
-    }
-
-    #score,
-    #info {
-      width: 200px;
-    }
-  </style>
 </html>
