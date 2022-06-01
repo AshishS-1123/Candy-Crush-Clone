@@ -1,3 +1,4 @@
+import { Colors } from '~/setup';
 import { SimpleCandy } from '../CellItems/Candies/SimpleCandy';
 import { CellItem } from '../CellItems/CellItem';
 import { Cell } from './Cell';
@@ -6,10 +7,10 @@ export class SimpleCell implements Cell {
     cellItem: CellItem;
     isVisible: boolean;
 
-    constructor() {
+    constructor(color: Colors) {
         // Initially, all cells will be empty. Then gravity will take effect 
         // pull candies down.
-        this.cellItem = new SimpleCandy('EMPTY');
+        this.cellItem = new SimpleCandy(color);
         this.isVisible = true;
     }
 

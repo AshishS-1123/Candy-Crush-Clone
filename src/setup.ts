@@ -10,8 +10,8 @@ export const CELL_HEIGHT = 36;
 export const CELL_PADDING = 14;
 
 // Rows and columns of candies
-export const ROWS = Math.floor ( (BOARD_HEIGHT - CELL_PADDING / 2) / (CELL_HEIGHT + CELL_PADDING) );
-export const COLUMNS = Math.floor ( (BOARD_WIDTH - CELL_PADDING / 2) / (CELL_WIDTH + CELL_PADDING) );
+export const ROWS = Math.floor ( (BOARD_HEIGHT - CELL_PADDING) / (CELL_HEIGHT + CELL_PADDING) );
+export const COLUMNS = Math.floor ( (BOARD_WIDTH - CELL_PADDING) / (CELL_WIDTH + CELL_PADDING) );
 
 // Colors supported for candies
 export const RED = 'RED';

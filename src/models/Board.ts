@@ -2,20 +2,21 @@ import { COLUMNS, ROWS } from "~/setup";
 import { Cell } from "models/Cells/Cell";
 import { CandySourceCell } from "./Cells/CandySourceCell";
 import { SimpleCell } from "./Cells/SimpleCell";
+import { generateRandomBoard } from "~/utils/boardGenerator";
 
-function createCellItemsFromBoardConfig(): Cell[][] {
-    const cellItems: Cell[][] = [];
+// function createCellItemsFromBoardConfig(): Cell[][] {
+//     const cellItems: Cell[][] = [];
 
-    for (let i = 0; i < ROWS; ++i) {
-        cellItems[i] = [];
+//     for (let i = 0; i < ROWS; ++i) {
+//         cellItems[i] = [];
 
-        for (let j = 0; j < COLUMNS; ++j) {
-            cellItems[i][j] = new SimpleCell();
-        }
-    }
+//         for (let j = 0; j < COLUMNS; ++j) {
+//             cellItems[i][j] = new SimpleCell();
+//         }
+//     }
 
-    return cellItems;
-}
+//     return cellItems;
+// }
 
 function createCandySourceCells(): CandySourceCell[] {
     const sourceCells: CandySourceCell[] = [];
@@ -33,7 +34,7 @@ export class Board {
     sourceCells: CandySourceCell[];
 
     constructor() {
-        this.cells = createCellItemsFromBoardConfig();
+        this.cells = generateRandomBoard();
         this.sourceCells = createCandySourceCells();
     }
 

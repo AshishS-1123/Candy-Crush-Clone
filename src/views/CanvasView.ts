@@ -34,7 +34,7 @@ export class CanvasView {
                 const y = (CELL_PADDING + CELL_HEIGHT) * j;
 
                 this.context?.drawImage(
-                    board.cells[0][0].cellItem?.image || emptyCellImage, 
+                    board.cells[j][i].cellItem?.image || emptyCellImage, 
                     x, 
                     y, 
                     CELL_WIDTH + 2 * CELL_PADDING, 
