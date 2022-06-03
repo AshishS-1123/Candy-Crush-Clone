@@ -16,7 +16,7 @@ async function main(): Promise<void> {
     const board = new Board();
 
     const eventHandler =  new EventHandler(baseCanvas);
-    const swapHandler = new SwapHandler(baseCanvas, board);
+    const swapHandler = new SwapHandler(board);
 
     await delay(500);
     baseCanvas.drawBoard(board);
