@@ -20,12 +20,11 @@ export class SwapHandler {
 
     handleCellClicked (pos: Vector): void {
         const { x: pos_x, y: pos_y } = pos;
+        
 
         if (!this.firstSelectedCell) {
             this.firstSelectedCell = {x: pos_x, y: pos_y};
         } else if (!this.secondSelectedCell) {
-            console.log("Click second");
-            
             this.secondSelectedCell = {x: pos_x, y: pos_y};
 
             // The two cells that are being swapped should be adjacent.
@@ -33,10 +32,19 @@ export class SwapHandler {
                 Math.abs (this.firstSelectedCell.x - this.secondSelectedCell.x) !== 1 &&
                 Math.abs (this.firstSelectedCell.y - this.secondSelectedCell.y) !== 1
             ) {
+                console.log("Dont swap");
+                
                 this.firstSelectedCell = this.secondSelectedCell = null;
                 return;
             }
 
+            // The two cells should also not be adjacent.
+            if (Math.abs (this.firstSelectedCell.x - this.secondSelectedCell.x) === Math.abs (this.firstSelectedCell.y - this.secondSelectedCell.y)) {
+                this.firstSelectedCell = this.secondSelectedCell = null;
+                return;
+            }
+
+            
             // Render this on canvas.
             EventBus.renderSwapAnimation.emit ({
                 first: {
@@ -48,6 +56,11 @@ export class SwapHandler {
                     img: this.board.getImageAtCell (this.secondSelectedCell)
                 },
             });
+
+            // Update the board with this data.
+            const temp = this.board.cells[this.firstSelectedCell.x][this.firstSelectedCell.y];
+            this.board.cells[this.firstSelectedCell.x][this.firstSelectedCell.y] = this.board.cells[this.secondSelectedCell.x][this.secondSelectedCell.y];
+            this.board.cells[this.secondSelectedCell.x][this.secondSelectedCell.y] = temp;
 
             // Reset selection after swapping.
             this.firstSelectedCell = null;
