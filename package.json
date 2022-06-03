@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "images": "^3.2.4",
-    "setup": "0.0.3"
+    "setup": "0.0.3",
+    "signal-ts": "^1.2.4"
   }
 }
