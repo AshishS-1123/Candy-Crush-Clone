@@ -1,13 +1,18 @@
+import { EventBus } from "~/EventBus";
 import { CELL_PADDING, CELL_WIDTH, CELL_HEIGHT, COLUMNS, ROWS } from "~/setup";
 import { CanvasView } from "~/views/CanvasView";
 
 const THRESH = 10;
 
+type CallbackFunction = (pos_x: number, pos_y: number) => void;
+
 export class EventHandler {
     canvasView: CanvasView;
+    cellClickCallback: CallbackFunction | null;
 
     constructor(canvasView: CanvasView) {
         this.canvasView = canvasView;
+        this.cellClickCallback = null;
         
         // Add event listeners
         this.canvasView.canvas.addEventListener('click', this.handleButtonClick);
@@ -38,6 +43,6 @@ export class EventHandler {
         } 
 
         // If everything is ok, then trigger the event in canvas.
-        this.canvasView.cellClicked (pos_x, pos_y);
+        EventBus.cellClickEvent.emit ({x: pos_y, y: pos_x});
     }
 }

@@ -1,18 +1,22 @@
+import { EventBus } from "~/EventBus";
 import { Board } from "~/models/Board";
 import { BOARD_HEIGHT, BOARD_WIDTH, CELL_HEIGHT, CELL_PADDING, CELL_WIDTH, COLUMNS, ROWS } from "~/setup";
 import EMPTY_CELL from '../images/EmptyCell.png';
+import { SwapAnimationView } from "./SwapAnimationView";
 
 export class CanvasView {
     canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D | null;
-    private previousHoverCell: {pos_x: number, pos_y: number} | null;
+
+    private swapAnimation: SwapAnimationView;
 
     constructor(canvasName: string) {
         this.canvas = document.getElementById(canvasName) as HTMLCanvasElement;
         this.canvas.width = BOARD_WIDTH;
         this.canvas.height = BOARD_HEIGHT;
         this.context = this.canvas.getContext('2d');
-        this.previousHoverCell = null;
+
+        this.swapAnimation = new SwapAnimationView(this.context);
     }
 
     clearCanvas() {
@@ -20,8 +24,9 @@ export class CanvasView {
     }
 
     drawBoard(board: Board) {
-        this.clearCanvas();
+        this.context?.resetTransform();
         this.context?.translate(CELL_PADDING, CELL_PADDING);
+        this.clearCanvas();
 
         const emptyCellImage = new Image();
         emptyCellImage.src = EMPTY_CELL;

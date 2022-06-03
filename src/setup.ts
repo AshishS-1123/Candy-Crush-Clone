@@ -24,3 +24,14 @@ export const PURPLE = 'PURPLE';
 export type Colors = 'RED' | 'ORANGE' | 'BLUE' | 'GREEN' | 'YELLOW' | 'PURPLE' | 'EMPTY';
 export type StripeDirection = 'UP' | 'DOWN';
 export type SpecialCandy = 'DONUT' | 'MULTICOLORED';
+
+// Represents a pair of values.
+export type Vector = {
+    x: number,
+    y: number,
+};
+
+export type CellPos = {
+    pos: Vector,
+    img: HTMLImageElement
+}
