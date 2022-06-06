@@ -1,25 +1,17 @@
-import { SimpleCandy } from '../CellItems/Candies/SimpleCandy';
-import { CellItem } from '../CellItems/CellItem';
 import { Cell } from './Cell';
+import { CellType, Colors } from "~/setup";
+import EMPTY_CELL from '~images/EmptyCell.png';
 
 export class CandySourceCell implements Cell {
-    cellItem: CellItem;
+    cellType: CellType;
+    colorType: Colors;
+    image: HTMLImageElement = new Image();
     isVisible: boolean;
 
     constructor() {
-        // These cells will only produce candies and will not be visible.
-        this.cellItem = new SimpleCandy('EMPTY');
-        this.isVisible = false;
-    }
-
-    destroyCellItem: () => void = () => {
-
-    }
-
-    replaceCellItem: (newItem: CellItem) => CellItem = (newItem: CellItem) => {
-        const tempCellItem = this.cellItem;
-        this.cellItem = newItem;
-        
-        return tempCellItem;
+        this.cellType = 'HIDDEN';
+        this.colorType = 'EMPTY';
+        this.isVisible = true;
+        this.image.src = EMPTY_CELL;
     }
 }

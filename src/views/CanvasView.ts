@@ -1,7 +1,6 @@
 import { EventBus } from "~/EventBus";
 import { Board } from "~/models/Board";
 import { BOARD_HEIGHT, BOARD_WIDTH, CELL_HEIGHT, CELL_PADDING, CELL_WIDTH, COLUMNS, ROWS } from "~/setup";
-import EMPTY_CELL from '../images/EmptyCell.png';
 import { SwapAnimationView } from "./SwapAnimationView";
 
 export class CanvasView {
@@ -17,6 +16,8 @@ export class CanvasView {
         this.context = this.canvas.getContext('2d');
 
         this.swapAnimation = new SwapAnimationView(this.context);
+
+        EventBus.renderBoard.add(this.drawBoard.bind(this));
     }
 
     clearCanvas() {
@@ -28,9 +29,6 @@ export class CanvasView {
         this.context?.translate(CELL_PADDING, CELL_PADDING);
         this.clearCanvas();
 
-        const emptyCellImage = new Image();
-        emptyCellImage.src = EMPTY_CELL;
-
         // Draw all the cells.
         for(let i = 0; i < COLUMNS; ++i) {
             for (let j = 0; j < ROWS; ++j) {
@@ -39,7 +37,7 @@ export class CanvasView {
                 const y = (CELL_PADDING + CELL_HEIGHT) * j;
 
                 this.context?.drawImage(
-                    board.cells[j][i].cellItem?.image || emptyCellImage, 
+                    board.cells[j][i].image, 
                     x, 
                     y, 
                     CELL_WIDTH + 2 * CELL_PADDING, 
@@ -59,6 +57,5 @@ export class CanvasView {
         );
         this.context?.fill();
         console.log("Clicked ", pos_x, pos_y);
-        
     }
 }

@@ -31,8 +31,6 @@ export class SwapAnimationView {
     }
 
     drawSwapAnimation (params: {first: CellPos, second: CellPos}): void {
-        console.log(params.first.img, params.second.img);
-        
         const {first, second} = params;
 
         this.context?.resetTransform();
@@ -50,8 +48,8 @@ export class SwapAnimationView {
         }
 
         this.images = {
-            first: second.img,
-            second: first.img
+            first: first.img,
+            second: second.img
         }
 
         const endPos = {
