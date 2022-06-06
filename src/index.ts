@@ -1,15 +1,9 @@
+import { CandyMatchHandler } from "./controllers/CandyMatchHandler";
 import { EventHandler } from "./controllers/EventHandler";
 import { SwapHandler } from "./controllers/SwapHandler";
 import { Board } from "./models/Board";
 import { CanvasView } from "./views/CanvasView";
-
-function delay(delayInms: number): Promise<void> {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve();
-      }, delayInms);
-    });
-}
+import { delay } from './setup';
 
 async function main(): Promise<void> {
     const baseCanvas = new CanvasView('playField');
@@ -17,6 +11,7 @@ async function main(): Promise<void> {
 
     const eventHandler =  new EventHandler(baseCanvas);
     const swapHandler = new SwapHandler(board);
+    const candyMatchHandler = new CandyMatchHandler();
 
     await delay(500);
     baseCanvas.drawBoard(board);

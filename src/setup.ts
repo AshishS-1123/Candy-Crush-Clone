@@ -21,6 +21,7 @@ export const GREEN = 'GREEN';
 export const YELLOW = 'YELLOW';
 export const PURPLE = 'PURPLE';
 
+export type CellType = 'SIMPLE' | 'STRIPED' | 'HARD' | 'SPECIAL' | 'HIDDEN';
 export type Colors = 'RED' | 'ORANGE' | 'BLUE' | 'GREEN' | 'YELLOW' | 'PURPLE' | 'EMPTY';
 export type StripeDirection = 'UP' | 'DOWN';
 export type SpecialCandy = 'DONUT' | 'MULTICOLORED';
@@ -34,4 +35,12 @@ export type Vector = {
 export type CellPos = {
     pos: Vector,
     img: HTMLImageElement
+}
+
+export function delay(delayInms: number): Promise<void> {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, delayInms);
+    });
 }
