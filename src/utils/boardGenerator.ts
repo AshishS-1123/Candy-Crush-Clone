@@ -17,7 +17,7 @@ function selectRandomString (possibilities: string[], exceptions: string[] = [])
 export function generateRandomBoard (): Cell[][] {
     const cells: Cell[][] = [];
 
-    const choices = ['RED', 'ORANGE', 'BLUE', 'GREEN', 'YELLOW', 'PURPLE']
+    const choices = ['RED', 'ORANGE', 'BLUE', 'GREEN']//, 'YELLOW', 'PURPLE']
 
     for (let i = 0; i < ROWS; ++i) {
         cells[i] = [];
@@ -72,6 +72,29 @@ export function generateRandomBoard (): Cell[][] {
 
         if (!didCellChange) break;
     }
+
+    // TODO: Remove later. Only for testing purpose only.
+    return debug_setupMultiColored (cells);
+
+    // return cells;
+}
+
+function debug_setupMultiColored(cells: Cell[][]): Cell[][] {
+    // Generate horizontal six in line.
+    cells[0][0] = new SimpleCell('BLUE');
+    cells[0][1] = new SimpleCell('BLUE');
+    cells[0][2] = new SimpleCell('GREEN');
+    cells[0][3] = new SimpleCell('BLUE');
+    cells[0][4] = new SimpleCell('BLUE');
+    cells[1][2] = new SimpleCell('BLUE');
+
+    // Generate vertical six in line.
+    cells[1][3] = new SimpleCell('RED');
+    cells[2][3] = new SimpleCell('RED');
+    cells[3][3] = new SimpleCell('ORANGE');
+    cells[4][3] = new SimpleCell('RED');
+    cells[5][3] = new SimpleCell('RED');
+    cells[3][4] = new SimpleCell('RED');
 
     return cells;
 }
