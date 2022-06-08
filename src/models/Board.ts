@@ -1,4 +1,4 @@
-import { COLUMNS, ROWS } from "~/setup";
+import { Colors, COLUMNS, ROWS } from "~/setup";
 import { Cell } from "models/Cells/Cell";
 import { CandySourceCell } from "./Cells/CandySourceCell";
 import { generateRandomBoard } from "~/utils/boardGenerator";
@@ -51,7 +51,7 @@ export class Board {
         return this.cells[cellPos.x][cellPos.y].image;
     }
 
-    getColorAtCell (cellPos: Vector | null): string {
+    getColorAtCell (cellPos: Vector | null): Colors {
         if (!cellPos) return 'EMPTY';
 
         if (cellPos.x < 0 || cellPos.x >= ROWS || cellPos.y < 0 || cellPos.y >= COLUMNS) 

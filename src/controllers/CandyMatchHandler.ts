@@ -1,6 +1,19 @@
 import { EventBus } from "~/EventBus";
 import { Board } from "~/models/Board";
 import { COLUMNS, delay, ROWS, Vector } from "~/setup";
+import { checkSpecialCandy } from "~/utils/specialCandyHandler";
+
+enum MatchType {
+    HORIZONTAL_LEFT,
+    HORIZONTAL_MIDDLE,
+    HORIZONTAL_RIGHT,
+
+    VERTICAL_TOP,
+    VERTICAL_MIDDLE,
+    VERTICAL_BOTTOM,
+
+    NONE,
+}
 
 // Called by SwapHandler to match and destroy candies
 export class CandyMatchHandler {
@@ -9,8 +22,18 @@ export class CandyMatchHandler {
     }
 
     handleSwapRequest (params: {first: Vector, second: Vector, board: Board}) {
-        // Check if any the first or second cell matched.
-        if (this.checkIfCandiesMatch(params.board, params.first) || this.checkIfCandiesMatch(params.board, params.second)) {
+
+        // Check if first or second candy matched.
+        const matchTypeFirst = this.checkIfCandiesMatch(params.board, params.first);
+        const matchTypeSecond = this.checkIfCandiesMatch(params.board, params.second);
+
+        if (matchTypeFirst != MatchType.NONE) {
+            this.handleCandyMatch (params.board, params.first, matchTypeFirst);
+            return;
+        }
+
+        if (matchTypeSecond != MatchType.NONE) {
+            this.handleCandyMatch (params.board, params.second, matchTypeSecond);
             return;
         }
         
@@ -37,7 +60,7 @@ export class CandyMatchHandler {
     }
     // Scans board if there are three in line. Return if three in line.
     // Used to check whether to swap candies or destroy them.
-    checkIfCandiesMatch (board: Board, cellPos: Vector): boolean {
+    checkIfCandiesMatch (board: Board, cellPos: Vector): MatchType {
         /*
                           ( top2 )
                           ( top1 )
@@ -58,34 +81,48 @@ export class CandyMatchHandler {
         
         // Check horizontal match with this cell in left.
         if (board.doCandiesMatch (cellPos, right1) && board.doCandiesMatch(cellPos, right2)) {
-            return true;
+            return MatchType.HORIZONTAL_LEFT;
         }
 
         // Check if horizontal match with this cell in middle.
         if (board.doCandiesMatch (cellPos, left1) && board.doCandiesMatch(cellPos, right1)) {
-            return true;
+            return MatchType.HORIZONTAL_MIDDLE;
         }
 
         // Check if horizontal match with this cell in right.
         if (board.doCandiesMatch (cellPos, left1) && board.doCandiesMatch(cellPos, left2)) {
-            return true;
+            return MatchType.HORIZONTAL_RIGHT;
         }
         
         // Check if vertical match with this cell in top.
         if (board.doCandiesMatch (cellPos, bottom1) && board.doCandiesMatch(cellPos, bottom2)) {
-            return true;
+            return MatchType.VERTICAL_TOP;
         }
 
         // Check if vertical match with this cell in middle.
         if (board.doCandiesMatch (cellPos, top1) && board.doCandiesMatch(cellPos, bottom1)) {
-            return true;
+            return MatchType.VERTICAL_MIDDLE;
         }
         
         // Check if vertical match with this cell in bottom.
         if (board.doCandiesMatch (cellPos, top1) && board.doCandiesMatch(cellPos, top2)) {
-            return true;
+            return MatchType.VERTICAL_BOTTOM;
         }
         
-        return false;
+        return MatchType.NONE;
+    }
+
+    handleCandyMatch (board: Board, position: Vector, type: MatchType) {
+        const matchData = checkSpecialCandy (board, position);
+        console.log(matchData);
+
+        // Replace the current candy with the new candy.
+
+        // Delete the other candies.
+        EventBus.destroyCandies.emit ({
+            board,
+            candies: matchData.destroyCandies
+        });
+        
     }
 }

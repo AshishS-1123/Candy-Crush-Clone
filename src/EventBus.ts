@@ -17,4 +17,7 @@ export namespace EventBus {
 
     // Re-render canvas.
     export const renderBoard: Signal<Board> = new Signal();
+
+    // Destroy candies.
+    export const destroyCandies: Signal<{board: Board, candies: Vector[]}> = new Signal();
 }

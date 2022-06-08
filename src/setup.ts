@@ -21,10 +21,8 @@ export const GREEN = 'GREEN';
 export const YELLOW = 'YELLOW';
 export const PURPLE = 'PURPLE';
 
-export type CellType = 'SIMPLE' | 'STRIPED' | 'HARD' | 'SPECIAL' | 'HIDDEN';
+export type CellType = 'SIMPLE' | 'STRIPED_V' | 'STRIPED_H' | 'HARD' | 'MULTICOLORED' | 'HIDDEN';
 export type Colors = 'RED' | 'ORANGE' | 'BLUE' | 'GREEN' | 'YELLOW' | 'PURPLE' | 'EMPTY';
-export type StripeDirection = 'UP' | 'DOWN';
-export type SpecialCandy = 'DONUT' | 'MULTICOLORED';
 
 // Represents a pair of values.
 export type Vector = {
