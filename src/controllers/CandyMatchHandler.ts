@@ -4,6 +4,7 @@ import { MultiColoredCell } from "~/models/Cells/MultiColoredCell";
 import { HardCell } from  '~/models/Cells/HardCell';
 import { Vector } from "~/setup";
 import { checkSpecialCandy } from "~/utils/specialCandyHandler";
+import { StripedCell } from "~/models/Cells/StripedCell";
 
 // Called by SwapHandler to match and destroy candies
 export class CandyMatchHandler {
@@ -102,8 +103,12 @@ export class CandyMatchHandler {
         // Replace the current candy with the new candy.
         switch(matchData.newCandyType) {
             case 'SIMPLE': break;
-            case 'STRIPED_H': break;
-            case 'STRIPED_V': break;
+            case 'STRIPED_H':
+                board.cells[position.x][position.y] = new StripedCell(matchData.newCandyColor, false);
+                break;
+            case 'STRIPED_V':
+                board.cells[position.x][position.y] = new StripedCell(matchData.newCandyColor, true);
+                break;
             case 'HARD':
                 board.cells[position.x][position.y] = new HardCell(matchData.newCandyColor);
                 break;

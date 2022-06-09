@@ -82,19 +82,33 @@ export function checkSpecialCandy (board: Board, pos: Vector): CandyMatchData {
     }
 
     // Check if striped candy can be formed.
-    if (countTop + countBottom == 3 || countLeft + countRight == 3) {
+    const vStripedCandy = checkVStripedCandy(countTop, countBottom, pos);
+    if (vStripedCandy.doesForm) {
         const returnValue: CandyMatchData = {
             newCandyType: 'STRIPED_V',
-            newCandyColor: board.getColorAtCell(pos),
-            destroyCandies: []
+            newCandyColor: board.getColorAtCell (pos),
+            destroyCandies: vStripedCandy.destroyCandies
         }
+
+        return returnValue;
+    }
+
+    const hStripedCandy = checkHStripedCandy(countLeft, countRight, pos);
+    if (hStripedCandy.doesForm) {
+        const returnValue: CandyMatchData = {
+            newCandyType: 'STRIPED_H',
+            newCandyColor: board.getColorAtCell (pos),
+            destroyCandies: hStripedCandy.destroyCandies
+        }
+        console.log("Return val", returnValue);
         
+
         return returnValue;
     }
     
     const returnValue: CandyMatchData = {
         newCandyType: 'SIMPLE',
-        newCandyColor: board.getColorAtCell (pos), // Color doesn't matter for multicolored.
+        newCandyColor: board.getColorAtCell (pos),
         destroyCandies: []
     }
     
@@ -152,6 +166,47 @@ function checkHardCandy (
 
         // Mark all bottom candies for destroy
         for (let i = 1; i < countBottom + 1; ++i) destroyCandies.push({ x: pos.x + i, y: pos.y});
+
+        // Mark all left candies for destroy
+        for (let i = 1; i < countLeft + 1; ++i) destroyCandies.push({ x: pos.x, y: pos.y - i});
+
+        // Mark all right candies for destroy
+        for (let i = 1; i < countRight + 1; ++i) destroyCandies.push({ x: pos.x, y: pos.y + i});
+    }
+
+    return {doesForm, destroyCandies};
+}
+
+function checkVStripedCandy (
+    countTop: number,
+    countBottom: number,
+    pos: Vector
+): {doesForm: boolean, destroyCandies: Vector[]} {
+    let destroyCandies: Vector[] = [];
+    let doesForm: boolean = false;
+
+    if (countTop + countBottom == 3) {
+        doesForm = true;
+        // Mark all top candies for destroy
+        for (let i = 1; i < countTop + 1; ++i) destroyCandies.push({ x: pos.x - i, y: pos.y});
+
+        // Mark all bottom candies for destroy
+        for (let i = 1; i < countBottom + 1; ++i) destroyCandies.push({ x: pos.x + i, y: pos.y});
+    }
+
+    return {doesForm, destroyCandies};
+}
+
+function checkHStripedCandy (
+    countLeft: number,
+    countRight: number,
+    pos: Vector
+): {doesForm: boolean, destroyCandies: Vector[]} {
+    let destroyCandies: Vector[] = [];
+    let doesForm: boolean = false;
+
+    if (countLeft + countRight == 3) {
+        doesForm = true;
 
         // Mark all left candies for destroy
         for (let i = 1; i < countLeft + 1; ++i) destroyCandies.push({ x: pos.x, y: pos.y - i});

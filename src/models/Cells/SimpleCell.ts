@@ -1,4 +1,4 @@
-import { CellType, Colors, delay } from '~/setup';
+import { CellType, Colors } from '~/setup';
 import { Cell } from './Cell';
 import { Global } from '~/EventBus';
 
@@ -13,7 +13,6 @@ export class SimpleCell implements Cell {
         this.colorType = color;
         this.isVisible = true;
 
-        // this.image.src = assignImageFromColor(color);
         this.image = Global.spritePool.getSimpleCandy(color);
     }
 }
