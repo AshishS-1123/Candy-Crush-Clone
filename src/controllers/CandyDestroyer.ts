@@ -12,7 +12,6 @@ export class CandyDestroyer {
         const {board, candies} = params;
         console.log("Destroy", candies);
         
-
         candies.forEach(candy => {
             board.cells[candy.x][candy.y] = new SimpleCell('EMPTY');
         });

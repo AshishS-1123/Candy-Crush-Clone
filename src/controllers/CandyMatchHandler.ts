@@ -1,20 +1,9 @@
 import { EventBus } from "~/EventBus";
 import { Board } from "~/models/Board";
 import { MultiColoredCell } from "~/models/Cells/MultiColoredCell";
-import { COLUMNS, delay, ROWS, Vector } from "~/setup";
+import { HardCell } from  '~/models/Cells/HardCell';
+import { Vector } from "~/setup";
 import { checkSpecialCandy } from "~/utils/specialCandyHandler";
-
-enum MatchType {
-    HORIZONTAL_LEFT,
-    HORIZONTAL_MIDDLE,
-    HORIZONTAL_RIGHT,
-
-    VERTICAL_TOP,
-    VERTICAL_MIDDLE,
-    VERTICAL_BOTTOM,
-
-    NONE,
-}
 
 // Called by SwapHandler to match and destroy candies
 export class CandyMatchHandler {
@@ -25,19 +14,12 @@ export class CandyMatchHandler {
     handleSwapRequest (params: {first: Vector, second: Vector, board: Board}) {
 
         // Check if first or second candy matched.
-        const matchTypeFirst = this.checkIfCandiesMatch(params.board, params.first);
-        const matchTypeSecond = this.checkIfCandiesMatch(params.board, params.second);
-
-        if (matchTypeFirst != MatchType.NONE) {
-            this.handleCandyMatch (params.board, params.first, matchTypeFirst);
+        if (this.checkIfCandiesMatch(params.board, params.first) || this.checkIfCandiesMatch(params.board, params.second)) {
+            this.handleCandyMatch(params.board, params.first);
+            this.handleCandyMatch(params.board, params.second);
             return;
         }
 
-        if (matchTypeSecond != MatchType.NONE) {
-            this.handleCandyMatch (params.board, params.second, matchTypeSecond);
-            return;
-        }
-        
         // If candies did not match, emit signal to re swap these cells.
         EventBus.renderSwapAnimation.emit ({
             second: {
@@ -61,7 +43,7 @@ export class CandyMatchHandler {
     }
     // Scans board if there are three in line. Return if three in line.
     // Used to check whether to swap candies or destroy them.
-    checkIfCandiesMatch (board: Board, cellPos: Vector): MatchType {
+    checkIfCandiesMatch (board: Board, cellPos: Vector): boolean {
         /*
                           ( top2 )
                           ( top1 )
@@ -82,38 +64,38 @@ export class CandyMatchHandler {
         
         // Check horizontal match with this cell in left.
         if (board.doCandiesMatch (cellPos, right1) && board.doCandiesMatch(cellPos, right2)) {
-            return MatchType.HORIZONTAL_LEFT;
+            return true;
         }
 
         // Check if horizontal match with this cell in middle.
         if (board.doCandiesMatch (cellPos, left1) && board.doCandiesMatch(cellPos, right1)) {
-            return MatchType.HORIZONTAL_MIDDLE;
+            return true;
         }
 
         // Check if horizontal match with this cell in right.
         if (board.doCandiesMatch (cellPos, left1) && board.doCandiesMatch(cellPos, left2)) {
-            return MatchType.HORIZONTAL_RIGHT;
+            return true;
         }
         
         // Check if vertical match with this cell in top.
         if (board.doCandiesMatch (cellPos, bottom1) && board.doCandiesMatch(cellPos, bottom2)) {
-            return MatchType.VERTICAL_TOP;
+            return true;
         }
 
         // Check if vertical match with this cell in middle.
         if (board.doCandiesMatch (cellPos, top1) && board.doCandiesMatch(cellPos, bottom1)) {
-            return MatchType.VERTICAL_MIDDLE;
+            return true;
         }
         
         // Check if vertical match with this cell in bottom.
         if (board.doCandiesMatch (cellPos, top1) && board.doCandiesMatch(cellPos, top2)) {
-            return MatchType.VERTICAL_BOTTOM;
+            return true;
         }
         
-        return MatchType.NONE;
+        return false;
     }
 
-    handleCandyMatch (board: Board, position: Vector, type: MatchType) {
+    handleCandyMatch (board: Board, position: Vector) {
         const matchData = checkSpecialCandy (board, position);
         console.log(matchData);
 
@@ -122,11 +104,11 @@ export class CandyMatchHandler {
             case 'SIMPLE': break;
             case 'STRIPED_H': break;
             case 'STRIPED_V': break;
-            case 'HARD': break;
+            case 'HARD':
+                board.cells[position.x][position.y] = new HardCell(matchData.newCandyColor);
+                break;
             case 'MULTICOLORED': 
                 board.cells[position.x][position.y] = new MultiColoredCell();
-                console.log("Set to multicolored");
-                
                 break;
         }
 
