@@ -75,9 +75,10 @@ export function generateRandomBoard (): Cell[][] {
 
     // TODO: Remove later. Only for testing purpose only.
     // return debug_setupMultiColored (cells);
-    return debug_setupHard (cells, 6); // Second param can only be between 0-6
+    // return debug_setupHard (cells, 7); // Second param can only be between 0-7
+    // return debug_setupStriped (cells, 7); // Second param can only be between 0-7
 
-    // return cells;
+    return cells;
 }
 
 function debug_setupMultiColored(cells: Cell[][]): Cell[][] {
@@ -191,13 +192,84 @@ function debug_setupHard (cells: Cell[][], idx: number): Cell[][] {
     return cells;
 }
 
-function debug_setupStriped (cells: Cell[][]): Cell[][] {
+function debug_setupStriped (cells: Cell[][], idx: number): Cell[][] {
+    const blueCells: number[][][] = [
+        // Case 1H.
+        [
+        [0,0],
+             [1,1],[1,2],[1,3],
+        ],
+        
+        // Case 2H.
+        [
+             [0,1],
+        [1,0],    [1,2],[1,3],
+        ],
+        
+        // Case 3H.
+        [
+                    [0,2],
+        [1,0],[1,1],     [1,3],
+        ],
+        
+        // Case 4H.
+        [
+                          [0,3],
+        [1,0],[1,1],[1,2],
+        ],
+        
+        // Case 1V.
+        [
+        [0,0],
+             [1,1],[2,1],[3,1],
+        ],
+        
+        // Case 2V.
+        [
+             [1,0],
+        [0,1],    [2,1],[3,1],
+        ],
+        
+        // Case 3V.
+        [
+                    [2,0],
+        [0,1],[1,1],     [3,1],
+        ],
+        
+        // Case 4V.
+        [
+                          [3,0],
+        [0,1],[1,1],[2,1],
+        ],
+    ]
+
+    const greenCells: number[][][] = [
+        // Case 1H.
+        [[1,0],[2,0],[1,4]],
+        // Case 2H.
+        [[1,1],[2,1],[1,4]],
+        // Case 3H.
+        [[1,2],[2,2],[1,4]],
+        // Case 4H.
+        [[1,3],[2,3],[1,4]],
+
+        // Case 1V.
+        [[0,1],[0,2],[4,1]],
+        // Case 2V.
+        [[1,1],[1,2],[4,1]],
+        // Case 3V.
+        [[2,1],[2,2],[4,1]],
+        // Case 4V.
+        [[3,1],[3,2],[4,1]],
+    ]
+
+    blueCells[idx].forEach(cell => {
+        cells[cell[0]][cell[1]] = new SimpleCell('BLUE');
+    });
+
+    greenCells[idx].forEach(cell => {
+        cells[cell[0]][cell[1]] = new SimpleCell('GREEN');
+    });
+
     return cells;
 }
-
-
-        // Case 2. (+4, +0)
-        // [0,0][0,1][0,2][0,3]
-        // [1,0][1,1][1,2][1,3]
-        // [2,0][2,1][2,2][2,3]
-        // [3,0][3,1][3,2][3,3]
