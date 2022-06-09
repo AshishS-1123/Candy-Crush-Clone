@@ -100,17 +100,19 @@ export function checkSpecialCandy (board: Board, pos: Vector): CandyMatchData {
             newCandyColor: board.getColorAtCell (pos),
             destroyCandies: hStripedCandy.destroyCandies
         }
-        console.log("Return val", returnValue);
-        
 
         return returnValue;
     }
     
+    console.log("For cell color", board.getColorAtCell(pos));
+    
     const returnValue: CandyMatchData = {
         newCandyType: 'SIMPLE',
         newCandyColor: board.getColorAtCell (pos),
-        destroyCandies: []
+        destroyCandies: getDestroyListForSimple(countTop, countBottom, countLeft, countRight, pos)
     }
+    console.log("");
+    
     
     return returnValue;
 }
@@ -216,4 +218,30 @@ function checkHStripedCandy (
     }
 
     return {doesForm, destroyCandies};
+}
+
+function getDestroyListForSimple (
+    countTop: number,
+    countBottom: number,
+    countLeft: number,
+    countRight: number,
+    pos: Vector
+): Vector[] {
+    const destroyCandies: Vector[] = [];
+
+    console.log("For simple", {countTop, countBottom, countLeft, countRight});
+    
+    // This condition is very similar to HARD candy.
+    // But, in this case, only one of them have to be correct.
+    if (countTop + countBottom == 2) {
+        destroyCandies.push (pos);
+        for (let i = 1; i < countTop + 1; ++i) destroyCandies.push ({x: pos.x - i, y: pos.y});
+        for (let i = 1; i < countBottom + 1; ++i) destroyCandies.push ({x: pos.x + i, y: pos.y});
+    } else if (countLeft + countRight == 2) {
+        destroyCandies.push (pos);
+        for (let i = 1; i < countLeft + 1; ++i) destroyCandies.push ({x: pos.x, y: pos.y - i});
+        for (let i = 1; i < countRight + 1; ++i) destroyCandies.push ({x: pos.x, y: pos.y + i});
+    }
+
+    return destroyCandies;
 }

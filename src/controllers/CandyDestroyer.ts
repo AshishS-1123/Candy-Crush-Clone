@@ -10,7 +10,6 @@ export class CandyDestroyer {
 
     handleDestroyCandies(params: {board: Board, candies: Vector[]}): void {
         const {board, candies} = params;
-        console.log("Destroy", candies);
         
         candies.forEach(candy => {
             board.cells[candy.x][candy.y] = new SimpleCell('EMPTY');

@@ -17,7 +17,7 @@ function selectRandomString (possibilities: string[], exceptions: string[] = [])
 export function generateRandomBoard (): Cell[][] {
     const cells: Cell[][] = [];
 
-    const choices = ['RED', 'ORANGE', 'BLUE', 'GREEN']//, 'YELLOW', 'PURPLE']
+    const choices = ['RED', 'ORANGE', 'BLUE', 'GREEN', 'YELLOW', 'PURPLE']
 
     for (let i = 0; i < ROWS; ++i) {
         cells[i] = [];
