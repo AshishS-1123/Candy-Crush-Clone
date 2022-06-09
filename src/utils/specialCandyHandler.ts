@@ -14,9 +14,7 @@ export function checkSpecialCandy (board: Board, pos: Vector): CandyMatchData {
     let countRight = 0;
 
     // Count the number of adjacent candies with color same as pos above it.
-    console.log("Left");
     for (let i = -1; i > -6; --i) {
-        console.log(board.getColorAtCell({x: pos.x, y: pos.y + i}), {x: pos.x, y: pos.y + i});
         if (board.getColorAtCell({x: pos.x, y: pos.y + i}) == board.getColorAtCell(pos)) {
             ++countLeft;
         } else {
@@ -25,9 +23,7 @@ export function checkSpecialCandy (board: Board, pos: Vector): CandyMatchData {
     }
 
     // Count the number of adjacent candies with color same as pos below it.
-    console.log("Right");
     for (let i = 1; i < 6; ++i) {
-        console.log(board.getColorAtCell({x: pos.x, y: pos.y + i}), {x: pos.x, y: pos.y + i});
         if (board.getColorAtCell({x: pos.x, y: pos.y + i}) == board.getColorAtCell(pos)) {
             ++countRight;
         } else {
@@ -36,9 +32,7 @@ export function checkSpecialCandy (board: Board, pos: Vector): CandyMatchData {
     }
 
     // Count the number of adjacent candies with color same as pos left of it.
-    console.log("Top");
     for (let i = -1; i > -6; --i) {
-        console.log(board.getColorAtCell({x: pos.x + i, y: pos.y}), {x: pos.x + i, y: pos.y});
         if (board.getColorAtCell({x: pos.x + i, y: pos.y}) == board.getColorAtCell(pos)) {
             ++countTop;
         } else {
@@ -47,9 +41,7 @@ export function checkSpecialCandy (board: Board, pos: Vector): CandyMatchData {
     }
     
     // Count the number of adjacent candies with color same as pos right of it.
-    console.log("Bottom");
     for (let i = 1; i < 6; ++i) {
-        console.log(board.getColorAtCell({x: pos.x + i, y: pos.y}), {x: pos.x + i, y: pos.y});
         if (board.getColorAtCell({x: pos.x + i, y: pos.y}) == board.getColorAtCell(pos)) {
             ++countBottom;
         } else {
@@ -104,15 +96,11 @@ export function checkSpecialCandy (board: Board, pos: Vector): CandyMatchData {
         return returnValue;
     }
     
-    console.log("For cell color", board.getColorAtCell(pos));
-    
     const returnValue: CandyMatchData = {
         newCandyType: 'SIMPLE',
         newCandyColor: board.getColorAtCell (pos),
         destroyCandies: getDestroyListForSimple(countTop, countBottom, countLeft, countRight, pos)
     }
-    console.log("");
-    
     
     return returnValue;
 }
@@ -229,8 +217,6 @@ function getDestroyListForSimple (
 ): Vector[] {
     const destroyCandies: Vector[] = [];
 
-    console.log("For simple", {countTop, countBottom, countLeft, countRight});
-    
     // This condition is very similar to HARD candy.
     // But, in this case, only one of them have to be correct.
     if (countTop + countBottom == 2) {

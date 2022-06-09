@@ -15,4 +15,8 @@ export class StripedCell implements Cell {
 
         this.image = isVertical ? Global.spritePool.getStripedVertical(color) : Global.spritePool.getStripedHorizontal(color);
     }
+
+    copy :() => Cell = () => {
+        return new StripedCell(this.colorType, this.cellType === 'STRIPED_V');
+    }
 }

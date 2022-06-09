@@ -16,4 +16,8 @@ export class HardCell implements Cell {
         // this.image.src = assignImageFromColor(color);
         this.image = Global.spritePool.getHardCandy(color);
     }
+
+    copy :() => Cell = () => {
+        return new HardCell(this.colorType);
+    }
 }

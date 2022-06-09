@@ -98,7 +98,6 @@ export class CandyMatchHandler {
 
     handleCandyMatch (board: Board, position: Vector) {
         const matchData = checkSpecialCandy (board, position);
-        console.log(matchData);
 
         // Replace the current candy with the new candy.
         switch(matchData.newCandyType) {

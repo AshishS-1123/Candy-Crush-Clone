@@ -1,17 +1,10 @@
 import { Cell } from "~/models/Cells/Cell";
 import { Colors, COLUMNS, ROWS } from "~/setup";
 import { SimpleCell } from "~/models/Cells/SimpleCell";
+import { selectRandomString } from '~/utils/random';
 
 function compareCells (cell_1: Cell, cell_2: Cell): boolean {
     return (cell_1.image.src == cell_2.image.src);
-}
-
-function selectRandomString (possibilities: string[], exceptions: string[] = []) {
-    while (1) {
-        const choice = possibilities[ Math.floor (Math.random() * possibilities.length) ];
-
-        if (!exceptions.find (element => element === choice)) return choice;
-    }
 }
 
 export function generateRandomBoard (): Cell[][] {

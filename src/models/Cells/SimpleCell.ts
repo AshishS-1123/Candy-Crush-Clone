@@ -15,4 +15,8 @@ export class SimpleCell implements Cell {
 
         this.image = Global.spritePool.getSimpleCandy(color);
     }
+
+    copy :() => Cell = () => {
+        return new SimpleCell(this.colorType);
+    }
 }

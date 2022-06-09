@@ -17,4 +17,8 @@ export class MultiColoredCell implements Cell {
 
         this.image = Global.spritePool.getMulticolored();
     }
+
+    copy :() => Cell = () => {
+        return new MultiColoredCell();
+    }
 }

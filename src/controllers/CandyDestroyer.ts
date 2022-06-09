@@ -18,6 +18,9 @@ export class CandyDestroyer {
         // Update the global board object.
         EventBus.updateBoard.emit (board);
 
+        // Apply gravity to board.
+        EventBus.applyGravity.emit ();
+
         // Redraw the canvas.
         EventBus.renderBoard.emit (board);
     }

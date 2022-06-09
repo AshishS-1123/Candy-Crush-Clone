@@ -12,4 +12,6 @@ export interface Cell {
 
     // Whether the cell should be rendered on the canvas.
     isVisible: boolean;
+
+    copy: () => Cell;
 }

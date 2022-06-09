@@ -21,6 +21,9 @@ export namespace EventBus {
 
     // Destroy candies.
     export const destroyCandies: Signal<{board: Board, candies: Vector[]}> = new Signal();
+
+    // Apply gravity to board.
+    export const applyGravity: Signal<void> = new Signal();
 }
 
 export namespace Global {

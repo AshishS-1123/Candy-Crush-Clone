@@ -19,6 +19,11 @@ function createCandySourceCells(): CandySourceCell[] {
 export class Board {
     // Matrix of items that represents board state.
     cells: Cell[][];
+
+    // These cells are used for generating new candies.
+    // Instead of using an array of cells, we can just as easily use a single one,
+    // However, in the future, we might have the need to generate special candies at 
+    // certain locations. An array of source cells will be useful there.
     sourceCells: CandySourceCell[];
 
     constructor() {
