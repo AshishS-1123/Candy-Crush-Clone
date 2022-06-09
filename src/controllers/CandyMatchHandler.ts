@@ -1,5 +1,6 @@
 import { EventBus } from "~/EventBus";
 import { Board } from "~/models/Board";
+import { MultiColoredCell } from "~/models/Cells/MultiColoredCell";
 import { COLUMNS, delay, ROWS, Vector } from "~/setup";
 import { checkSpecialCandy } from "~/utils/specialCandyHandler";
 
@@ -117,6 +118,20 @@ export class CandyMatchHandler {
         console.log(matchData);
 
         // Replace the current candy with the new candy.
+        switch(matchData.newCandyType) {
+            case 'SIMPLE': break;
+            case 'STRIPED_H': break;
+            case 'STRIPED_V': break;
+            case 'HARD': break;
+            case 'MULTICOLORED': 
+                board.cells[position.x][position.y] = new MultiColoredCell();
+                console.log("Set to multicolored");
+                
+                break;
+        }
+
+        // Update the board and re-render.
+        EventBus.updateBoard.emit (board);
 
         // Delete the other candies.
         EventBus.destroyCandies.emit ({

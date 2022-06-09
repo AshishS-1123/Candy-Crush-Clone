@@ -1,4 +1,4 @@
-import { CellType, Colors } from '~/setup';
+import { CellType, Colors, delay } from '~/setup';
 import { Cell } from './Cell';
 
 import BLUE_CANDY from '~/images/SimpleCandies/Blue_Simple.png';
@@ -8,6 +8,7 @@ import PURPLE_CANDY from '~/images/SimpleCandies/Purple_Simple.png';
 import RED_CANDY from '~/images/SimpleCandies/Red_Simple.png';
 import YELLOW_CANDY from '~images/SimpleCandies/Yellow_Simple.png';
 import EMPTY_CELL from '~images/EmptyCell.png';
+import { Global } from '~/EventBus';
 
 // Uses color string to get image for this candy
 function assignImageFromColor(color: Colors) {
@@ -25,13 +26,15 @@ function assignImageFromColor(color: Colors) {
 export class SimpleCell implements Cell {
     cellType: CellType;
     colorType: Colors;
-    image: HTMLImageElement = new Image();
+    image: HTMLImageElement;
     isVisible: boolean;
 
     constructor(color: Colors) {
         this.cellType = 'SIMPLE';
         this.colorType = color;
         this.isVisible = true;
-        this.image.src = assignImageFromColor (color);
+
+        // this.image.src = assignImageFromColor(color);
+        this.image = Global.spritePool.getSimpleCandy(color);
     }
 }

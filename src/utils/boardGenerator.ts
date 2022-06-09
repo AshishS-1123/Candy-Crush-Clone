@@ -98,3 +98,11 @@ function debug_setupMultiColored(cells: Cell[][]): Cell[][] {
 
     return cells;
 }
+
+function debug_setupHard (cells: Cell[][]): Cell[][] {
+    return cells;
+}
+
+function debug_setupStriped (cells: Cell[][]): Cell[][] {
+    return cells;
+}

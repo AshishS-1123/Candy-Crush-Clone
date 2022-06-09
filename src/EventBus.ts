@@ -1,6 +1,7 @@
 import { Signal } from 'signal-ts';
 import { CellPos, Vector } from 'setup';
 import { Board } from './models/Board';
+import { SpritePool } from './services/SpritePool';
 
 export namespace EventBus {
     // Emitted by EventHandler to when cells are clicked.
@@ -20,4 +21,8 @@ export namespace EventBus {
 
     // Destroy candies.
     export const destroyCandies: Signal<{board: Board, candies: Vector[]}> = new Signal();
+}
+
+export namespace Global {
+    export const spritePool: SpritePool = new SpritePool();
 }
