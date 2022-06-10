@@ -2,7 +2,7 @@ import { EventBus } from "~/EventBus";
 import { Board } from "~/models/Board";
 import { MultiColoredCell } from "~/models/Cells/MultiColoredCell";
 import { HardCell } from  '~/models/Cells/HardCell';
-import { Vector } from "~/setup";
+import { Vector, delay } from "~/setup";
 import { checkSpecialCandy } from "~/utils/specialCandyHandler";
 import { StripedCell } from "~/models/Cells/StripedCell";
 
@@ -21,25 +21,30 @@ export class CandyMatchHandler {
             return;
         }
 
-        // If candies did not match, emit signal to re swap these cells.
-        EventBus.renderSwapAnimation.emit ({
-            second: {
-                pos: params.first,
-                img: params.board.getImageAtCell (params.first)
-            },
-            first: {
-                pos: params.second,
-                img: params.board.getImageAtCell (params.second)
-            },
-        });
+        delay(100).then (() => {
+            // If candies did not match, emit signal to re swap these cells.
+            EventBus.renderSwapAnimation.emit ({
+                second: {
+                    pos: params.first,
+                    img: params.board.getImageAtCell (params.first)
+                },
+                first: {
+                    pos: params.second,
+                    img: params.board.getImageAtCell (params.second)
+                },
+            });
+        })
 
-        // Update the board with this data.
-        const temp = params.board.cells[params.first.x][params.first.y];
-        params.board.cells[params.first.x][params.first.y] = params.board.cells[params.second.x][params.second.y];
-        params.board.cells[params.second.x][params.second.y] = temp;
+        delay(500).then (() => {
+            // Update the board with this data.
+            const temp = params.board.cells[params.first.x][params.first.y];
+            params.board.cells[params.first.x][params.first.y] = params.board.cells[params.second.x][params.second.y];
+            params.board.cells[params.second.x][params.second.y] = temp;
+    
+            // Update global board class.
+            EventBus.updateBoard.emit (params.board);
+        })
 
-        // Update global board class.
-        EventBus.updateBoard.emit (params.board);
         
     }
     // Scans board if there are three in line. Return if three in line.
@@ -113,11 +118,15 @@ export class CandyMatchHandler {
                 break;
             case 'MULTICOLORED': 
                 board.cells[position.x][position.y] = new MultiColoredCell();
+                console.log(board.cells[position.x][position.y]);
+                
                 break;
         }
-
+        
         // Update the board and re-render.
         EventBus.updateBoard.emit (board);
+
+        EventBus.renderBoard.emit (board);
 
         // Delete the other candies.
         EventBus.destroyCandies.emit ({

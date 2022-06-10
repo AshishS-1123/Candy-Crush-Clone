@@ -10,6 +10,11 @@ export class GravityHandler {
         this.board = board;
 
         EventBus.applyGravity.add (this.applyGravityToBoard.bind (this));
+        EventBus.updateBoard.add (this.handleAddBoard.bind (this));
+    }
+
+    handleAddBoard (board: Board) {
+        this.board = board;
     }
 
     applyGravityToBoard () {

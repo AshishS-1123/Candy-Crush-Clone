@@ -23,7 +23,7 @@ export class SwapHandler {
         this.board = board;
     }
 
-    async handleCellClicked (pos: Vector) {
+    handleCellClicked (pos: Vector) {
         const { x: pos_x, y: pos_y } = pos;
         
 
@@ -59,26 +59,29 @@ export class SwapHandler {
                 },
             });
 
-            await delay(500);
-            
-            // Update the board with this data.
-            const temp = this.board.cells[this.firstSelectedCell.x][this.firstSelectedCell.y];
-            this.board.cells[this.firstSelectedCell.x][this.firstSelectedCell.y] = this.board.cells[this.secondSelectedCell.x][this.secondSelectedCell.y];
-            this.board.cells[this.secondSelectedCell.x][this.secondSelectedCell.y] = temp;
-            
-            // Update the global board class.
-            EventBus.updateBoard.emit (this.board);
-
-            EventBus.swapCellRequest.emit ({
-                first: this.firstSelectedCell,
-                second: this.secondSelectedCell,
-                board: this.board
-            });
-
-            // Reset selection after swapping.
-            this.firstSelectedCell = null;
-            this.secondSelectedCell = null;
+            delay(600).then(this.postAnimationCallback.bind(this));
         }
+    }
 
+    postAnimationCallback() {
+        if (!this.firstSelectedCell || !this.secondSelectedCell) return;
+
+        // Update the board with this data.
+        const temp = this.board.cells[this.firstSelectedCell.x][this.firstSelectedCell.y];
+        this.board.cells[this.firstSelectedCell.x][this.firstSelectedCell.y] = this.board.cells[this.secondSelectedCell.x][this.secondSelectedCell.y];
+        this.board.cells[this.secondSelectedCell.x][this.secondSelectedCell.y] = temp;
+
+        // Update the global board class.
+        EventBus.updateBoard.emit (this.board);
+
+        EventBus.swapCellRequest.emit ({
+            first: this.firstSelectedCell,
+            second: this.secondSelectedCell,
+            board: this.board
+        });
+
+        // Reset selection after swapping.
+        this.firstSelectedCell = null;
+        this.secondSelectedCell = null;
     }
 }

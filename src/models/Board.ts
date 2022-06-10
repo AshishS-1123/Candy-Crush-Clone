@@ -41,7 +41,7 @@ export class Board {
         this.cells = board.cells;
         this.sourceCells = board.sourceCells;
 
-        EventBus.renderBoard.emit(this);
+        // EventBus.renderBoard.emit(this);
     }
 
     getImageAtCell (cellPos: Vector | null): HTMLImageElement {

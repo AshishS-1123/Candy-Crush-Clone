@@ -10,7 +10,7 @@ function compareCells (cell_1: Cell, cell_2: Cell): boolean {
 export function generateRandomBoard (): Cell[][] {
     const cells: Cell[][] = [];
 
-    const choices = ['RED', 'ORANGE', 'BLUE', 'GREEN']//, 'YELLOW', 'PURPLE']
+    const choices = ['RED', 'ORANGE', 'BLUE', 'GREEN', 'YELLOW', 'PURPLE']
 
     for (let i = 0; i < ROWS; ++i) {
         cells[i] = [];
@@ -67,7 +67,7 @@ export function generateRandomBoard (): Cell[][] {
     }
 
     // TODO: Remove later. Only for testing purpose only.
-    // return debug_setupMultiColored (cells);
+    return debug_setupMultiColored (cells);
     // return debug_setupHard (cells, 7); // Second param can only be between 0-7
     // return debug_setupStriped (cells, 7); // Second param can only be between 0-7
 
@@ -82,6 +82,7 @@ function debug_setupMultiColored(cells: Cell[][]): Cell[][] {
     cells[0][3] = new SimpleCell('BLUE');
     cells[0][4] = new SimpleCell('BLUE');
     cells[1][2] = new SimpleCell('BLUE');
+    cells[0][5] = new SimpleCell('GREEN');
 
     // Generate vertical six in line.
     cells[1][3] = new SimpleCell('RED');
