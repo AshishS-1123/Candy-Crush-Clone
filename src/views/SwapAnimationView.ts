@@ -7,7 +7,6 @@ function drawCellAtPos (context: CanvasRenderingContext2D | null, x: number, y: 
     const width = CELL_WIDTH + 2 * CELL_PADDING;
     const height = CELL_HEIGHT + 2 * CELL_PADDING;
 
-    context?.clearRect(x, y, width - 5, height - 5);
     context?.drawImage(
         img, 
         x, 
@@ -18,13 +17,19 @@ function drawCellAtPos (context: CanvasRenderingContext2D | null, x: number, y: 
 }
 
 export class SwapAnimationView {
+    // Context for rendering.
     private context: CanvasRenderingContext2D | null;
-    private posTracker: {first: Vector, second: Vector};
+    
+    // For tween animations.
+    private tweenValue = {x: 0, y: 0};
+    private initialPos: {first: Vector, second: Vector} = {first: {x:0,y:0}, second: {x:0,y:0}};
+    private tween = new TWEEN.Tween(this.tweenValue);
+
+    // For images to render.
     private images: {first: HTMLImageElement, second: HTMLImageElement};
 
     constructor (context: CanvasRenderingContext2D | null) {
         this.context = context;
-        this.posTracker = {first: {x: -1, y: -1}, second: {x: -1, y: -1}};
         this.images = {first: new Image(), second: new Image()};
 
         EventBus.renderSwapAnimation.add (this.drawSwapAnimation.bind (this));
@@ -36,62 +41,71 @@ export class SwapAnimationView {
         this.context?.resetTransform();
         this.context?.translate(CELL_PADDING, CELL_PADDING);
 
-        this.posTracker = {
-            first: {
-                x: (CELL_PADDING + CELL_HEIGHT) * second.pos.x,
-                y: (CELL_PADDING + CELL_HEIGHT) * second.pos.y
-            },
-            second: {
-                x: (CELL_PADDING + CELL_HEIGHT) * first.pos.x,
-                y: (CELL_PADDING + CELL_HEIGHT) * first.pos.y
-            }
-        }
-
         this.images = {
             first: first.img,
             second: second.img
         }
 
-        const endPos = {
-            first: {...this.posTracker.second},
-            second: {...this.posTracker.first}
+        this.initialPos = {
+            first: {x: first.pos.x * (CELL_PADDING + CELL_WIDTH), y: first.pos.y * (CELL_PADDING + CELL_HEIGHT)},
+            second: {x: second.pos.x * (CELL_PADDING + CELL_WIDTH), y: second.pos.y * (CELL_PADDING + CELL_HEIGHT)},
+        };
+
+        const endValue = {
+            x: first.pos.x === second.pos.x ? 0 : 1,
+            y: first.pos.y === second.pos.y ? 0 : 1,
         }
 
-        const tween = new TWEEN.Tween (this.posTracker)
-            .to (endPos, 1000)
-            .easing (TWEEN.Easing.Linear.None)
-            .onUpdate (this.drawBallsUsingTween.bind (this))
+        this.tween = new TWEEN.Tween (this.tweenValue)
+            .to (endValue, 500)
+            .easing (TWEEN.Easing.Quadratic.InOut)
             .start();
 
-        let animationRunning = true;
-        let currentTime = 0;
-
-        while (animationRunning) {
-            tween.onComplete(() => {
-                animationRunning = false;
-            });
-
-            TWEEN.update(currentTime);
-            currentTime += 1;
-        }        
+        requestAnimationFrame(this.animate.bind(this));
+        console.log("Done animate");
+        
     }
 
-    drawBallsUsingTween () {
-        const firstPos = this.posTracker.first;
-        const secondPos = this.posTracker.second;
+    animate(timeStamp: number) {
+        console.log("Animate");
         
+        TWEEN.update(timeStamp);
+
+        const fx = this.tweenValue.x * (this.initialPos.second.x - this.initialPos.first.x) + this.initialPos.first.x;
+        const fy = this.tweenValue.y * (this.initialPos.second.y - this.initialPos.first.y) + this.initialPos.first.y;
+
+        const sx = this.tweenValue.x * (this.initialPos.first.x - this.initialPos.second.x) + this.initialPos.second.x;
+        const sy = this.tweenValue.y * (this.initialPos.first.y - this.initialPos.second.y) + this.initialPos.second.y;
+        
+        const rectX = Math.min(this.initialPos.first.y, this.initialPos.second.y);
+        const rectY = Math.min(this.initialPos.first.x, this.initialPos.second.x);
+        const rectW = Math.abs(this.initialPos.first.y - this.initialPos.second.y) + CELL_HEIGHT + CELL_PADDING + 5;
+        const rectH = Math.abs(this.initialPos.first.x - this.initialPos.second.x) + CELL_WIDTH + CELL_PADDING + 5;
+        this.context?.clearRect(rectX, rectY, rectW, rectH);
+        
+        // Draw first cell.
         drawCellAtPos (
             this.context,
-            firstPos.y,
-            firstPos.x,
+            fy,
+            fx,
             this.images.first
         );
-        
+
+        // // Draw second cell.
         drawCellAtPos (
             this.context,
-            secondPos.y,
-            secondPos.x,
+            sy,
+            sx,
             this.images.second
         );
+
+        // Break the animation if tweening is done.
+        if (this.tweenValue.x == 1 || this.tweenValue.y == 1) {
+            this.tweenValue = {x: 0, y: 0};
+            return;
+        }
+
+        requestAnimationFrame(this.animate.bind(this));
     }
+
 }

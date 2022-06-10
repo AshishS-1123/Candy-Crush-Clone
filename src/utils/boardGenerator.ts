@@ -10,7 +10,7 @@ function compareCells (cell_1: Cell, cell_2: Cell): boolean {
 export function generateRandomBoard (): Cell[][] {
     const cells: Cell[][] = [];
 
-    const choices = ['RED', 'ORANGE', 'BLUE', 'GREEN', 'YELLOW', 'PURPLE']
+    const choices = ['RED', 'ORANGE', 'BLUE', 'GREEN']//, 'YELLOW', 'PURPLE']
 
     for (let i = 0; i < ROWS; ++i) {
         cells[i] = [];

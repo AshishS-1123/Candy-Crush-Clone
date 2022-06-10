@@ -2,7 +2,7 @@ import { EventBus } from "~/EventBus";
 import { CELL_PADDING, CELL_WIDTH, CELL_HEIGHT, COLUMNS, ROWS } from "~/setup";
 import { CanvasView } from "~/views/CanvasView";
 
-const THRESH = 15;
+const THRESH = CELL_WIDTH;
 
 type CallbackFunction = (pos_x: number, pos_y: number) => void;
 
