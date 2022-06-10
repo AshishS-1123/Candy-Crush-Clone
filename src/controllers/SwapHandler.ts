@@ -1,4 +1,4 @@
-import { Vector } from 'setup';
+import { delay, Vector } from '~/setup';
 import { EventBus } from '~/EventBus';
 import { Board } from '~/models/Board';
 import { CanvasView } from '~/views/CanvasView';
@@ -23,7 +23,7 @@ export class SwapHandler {
         this.board = board;
     }
 
-    handleCellClicked (pos: Vector): void {
+    async handleCellClicked (pos: Vector) {
         const { x: pos_x, y: pos_y } = pos;
         
 
@@ -59,6 +59,7 @@ export class SwapHandler {
                 },
             });
 
+            await delay(500);
             
             // Update the board with this data.
             const temp = this.board.cells[this.firstSelectedCell.x][this.firstSelectedCell.y];

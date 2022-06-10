@@ -35,7 +35,7 @@ export class SwapAnimationView {
         EventBus.renderSwapAnimation.add (this.drawSwapAnimation.bind (this));
     }
 
-    drawSwapAnimation (params: {first: CellPos, second: CellPos}): void {
+    drawSwapAnimation (params: {first: CellPos, second: CellPos}) {
         const {first, second} = params;
 
         this.context?.resetTransform();
@@ -62,13 +62,9 @@ export class SwapAnimationView {
             .start();
 
         requestAnimationFrame(this.animate.bind(this));
-        console.log("Done animate");
-        
     }
 
     animate(timeStamp: number) {
-        console.log("Animate");
-        
         TWEEN.update(timeStamp);
 
         const fx = this.tweenValue.x * (this.initialPos.second.x - this.initialPos.first.x) + this.initialPos.first.x;
