@@ -10,6 +10,8 @@ export class CandySourceCell implements Cell {
     image: HTMLImageElement = new Image();
     isVisible: boolean;
 
+    private previousGeneratedColor: string = 'EMPTY';
+
     constructor() {
         this.cellType = 'HIDDEN';
         this.colorType = 'EMPTY';
@@ -19,7 +21,12 @@ export class CandySourceCell implements Cell {
 
     generateRandomCandy () {
         const choices = ['RED', 'ORANGE', 'BLUE', 'GREEN', 'YELLOW', 'PURPLE']
-        return new SimpleCell(selectRandomString(choices) as Colors);
+        const exceptions = [this.previousGeneratedColor];
+
+        const newCell = new SimpleCell(selectRandomString(choices, exceptions) as Colors);
+        this.previousGeneratedColor = newCell.colorType;
+
+        return newCell;
     }
 
     copy :() => Cell = () => {

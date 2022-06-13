@@ -1,9 +1,68 @@
 import { Board } from 'models/Board';
 import { EventBus } from '~/EventBus';
 import { SimpleCell } from '~/models/Cells/SimpleCell';
-import { CellPos, COLUMNS, delay, ROWS } from '~/setup';
+import { COLUMNS, delay, ROWS } from '~/setup';
 
 // After some candies are destroyed, this class will cause candies to move down.
+export class GravityHandler {
+    private board: Board;
+
+    constructor(board: Board) {
+        this.board = board;
+
+        EventBus.applyGravity.add (this.applyGravityToBoard.bind (this));
+        EventBus.updateBoard.add (this.handleAddBoard.bind (this));
+    }
+
+    handleAddBoard (board: Board) {
+        this.board = board;
+    }
+
+    async applyGravityToBoard () {
+
+        while(true) {
+            let cellsModified = false;
+            console.log("Check board", ROWS, COLUMNS);
+            
+            // Fill all empty cells.
+            for (let i = 0; i < ROWS - 1; ++i) {
+                for (let j = 0; j < COLUMNS; ++j) {
+                    if (this.board.getColorAtCell({x: i + 1, y: j}) == 'EMPTY') {
+                        this.board.cells[i+1][j] = this.board.cells[i][j];
+                        this.board.cells[i][j] = new SimpleCell('EMPTY');
+
+                        cellsModified = true;
+                    }
+                }
+            }
+            
+            // Fill first row using source cells.
+            for (let i = 0; i < COLUMNS; ++i) {
+                if (this.board.getColorAtCell({x: 0, y: i}) == 'EMPTY') {
+                    this.board.cells[0][i] = this.board.sourceCells[i].generateRandomCandy();
+                }
+            }
+
+            if (cellsModified === false) break;
+
+            EventBus.renderBoard.emit (this.board);
+            await delay(150);
+        }
+
+
+        // Update the board and re-render.
+        EventBus.updateBoard.emit (this.board);
+
+        // Render the board.
+        EventBus.renderBoard.emit (this.board);
+
+    }
+
+}
+
+// Temporarily commenting this class. Will be implementing this later when developing animations.
+// For now, use the simple version above.
+/*
 export class GravityHandler {
     private board: Board;
 
@@ -87,3 +146,4 @@ export class GravityHandler {
         }
     }
 }
+*/

@@ -59,7 +59,7 @@ export class SwapHandler {
                 },
             });
 
-            delay(ANIMATION_DURATION + ANIMATION_THROTTLE).then(this.postAnimationCallback.bind(this));
+            delay(ANIMATION_DURATION).then(this.postAnimationCallback.bind(this));
         }
     }
 

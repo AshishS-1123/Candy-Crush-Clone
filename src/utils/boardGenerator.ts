@@ -70,7 +70,7 @@ export function generateRandomBoard (): Cell[][] {
     // return debug_setupMultiColored (cells);
     // return debug_setupHard (cells, 7); // Second param can only be between 0-7
     // return debug_setupStriped (cells, 7); // Second param can only be between 0-7
-    return debug_gravity(cells);
+    // return debug_gravity(cells);
 
     return cells;
 }
