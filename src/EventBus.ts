@@ -10,6 +10,9 @@ export namespace EventBus {
     // Sent to CandyMatchHandler to check if swapping is allowed.
     export const swapCellRequest: Signal<{first: Vector, second: Vector, board: Board}> = new Signal();
 
+    // Sent to CandyMatchHandler to check all cells on board for matching candies.
+    export const destroyCandyMatches: Signal<Board> = new Signal();
+
     // Used for updating board when controllers make changes in board.
     export const updateBoard: Signal<Board> = new Signal();
 

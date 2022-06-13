@@ -2,7 +2,7 @@ import { EventBus } from "~/EventBus";
 import { Board } from "~/models/Board";
 import { MultiColoredCell } from "~/models/Cells/MultiColoredCell";
 import { HardCell } from  '~/models/Cells/HardCell';
-import { Vector, delay, ANIMATION_DURATION, ANIMATION_THROTTLE } from "~/setup";
+import { Vector, delay, ANIMATION_DURATION, ANIMATION_THROTTLE, ROWS, COLUMNS } from "~/setup";
 import { checkSpecialCandy } from "~/utils/specialCandyHandler";
 import { StripedCell } from "~/models/Cells/StripedCell";
 
@@ -10,6 +10,7 @@ import { StripedCell } from "~/models/Cells/StripedCell";
 export class CandyMatchHandler {
     constructor() {
         EventBus.swapCellRequest.add (this.handleSwapRequest.bind(this));
+        EventBus.destroyCandyMatches.add (this.handleDestroyCandyMatches.bind(this));
     }
 
     handleSwapRequest (params: {first: Vector, second: Vector, board: Board}) {
@@ -133,6 +134,16 @@ export class CandyMatchHandler {
             board,
             candies: matchData.destroyCandies
         });
-        
+    }
+
+    handleDestroyCandyMatches(board: Board) {
+        for (let i = 0; i < ROWS; ++i) {
+            for (let j = 0; j < COLUMNS; ++j) {
+                const pos = {x: i, y: j};
+                if (this.checkIfCandiesMatch(board, pos)) {
+                    this.handleCandyMatch(board, pos);
+                }
+            }
+        }
     }
 }

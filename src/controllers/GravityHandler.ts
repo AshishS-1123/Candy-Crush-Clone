@@ -1,7 +1,7 @@
 import { Board } from 'models/Board';
 import { EventBus } from '~/EventBus';
 import { SimpleCell } from '~/models/Cells/SimpleCell';
-import { COLUMNS, delay, ROWS } from '~/setup';
+import { COLUMNS, delay, ROWS, Vector } from '~/setup';
 
 // After some candies are destroyed, this class will cause candies to move down.
 export class GravityHandler {
@@ -22,8 +22,7 @@ export class GravityHandler {
 
         while(true) {
             let cellsModified = false;
-            console.log("Check board", ROWS, COLUMNS);
-            
+
             // Fill all empty cells.
             for (let i = 0; i < ROWS - 1; ++i) {
                 for (let j = 0; j < COLUMNS; ++j) {
@@ -43,12 +42,20 @@ export class GravityHandler {
                 }
             }
 
-            if (cellsModified === false) break;
+            if (cellsModified === false) {
+                if (checkBoardPostGravity(this.board)) {
+                    EventBus.destroyCandyMatches.emit(this.board);
+                } else {
+                    break;
+                }
+            }
 
             EventBus.renderBoard.emit (this.board);
             await delay(150);
         }
 
+        // Check board for matching candies.
+        EventBus.destroyCandyMatches.emit(this.board);
 
         // Update the board and re-render.
         EventBus.updateBoard.emit (this.board);
@@ -58,6 +65,71 @@ export class GravityHandler {
 
     }
 
+}
+
+function checkBoardPostGravity(board: Board) {
+    // Loops through all cells to check if they match.
+    for (let i = 0; i < ROWS; ++i) {
+        for (let j = 0; j < COLUMNS; ++j) {
+            if (checkIfCandiesMatch(board, {x: i, y: j})) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+function checkIfCandiesMatch (board: Board, cellPos: Vector): boolean {
+    /*
+                      ( top2 )
+                      ( top1 )
+      (left2) (left1) (cellPos) (right1) (right2)
+                      (bottom1)
+                      (bottom2)
+     */
+    // cellPos = {x: cellPos.y, y: cellPos.x};
+    const top1 = {x: cellPos.x - 1, y: cellPos.y};
+    const top2 = {x: cellPos.x - 2, y: cellPos.y};
+    const bottom1 = {x: cellPos.x + 1, y: cellPos.y};
+    const bottom2 = {x: cellPos.x + 2, y: cellPos.y};
+
+    const left1 = {x: cellPos.x, y: cellPos.y - 1};
+    const left2 = {x: cellPos.x, y: cellPos.y - 2};
+    const right1 = {x: cellPos.x, y: cellPos.y + 1};
+    const right2 = {x: cellPos.x, y: cellPos.y + 2};
+    
+    // Check horizontal match with this cell in left.
+    if (board.doCandiesMatch (cellPos, right1) && board.doCandiesMatch(cellPos, right2)) {
+        return true;
+    }
+
+    // Check if horizontal match with this cell in middle.
+    if (board.doCandiesMatch (cellPos, left1) && board.doCandiesMatch(cellPos, right1)) {
+        return true;
+    }
+
+    // Check if horizontal match with this cell in right.
+    if (board.doCandiesMatch (cellPos, left1) && board.doCandiesMatch(cellPos, left2)) {
+        return true;
+    }
+    
+    // Check if vertical match with this cell in top.
+    if (board.doCandiesMatch (cellPos, bottom1) && board.doCandiesMatch(cellPos, bottom2)) {
+        return true;
+    }
+
+    // Check if vertical match with this cell in middle.
+    if (board.doCandiesMatch (cellPos, top1) && board.doCandiesMatch(cellPos, bottom1)) {
+        return true;
+    }
+    
+    // Check if vertical match with this cell in bottom.
+    if (board.doCandiesMatch (cellPos, top1) && board.doCandiesMatch(cellPos, top2)) {
+        return true;
+    }
+    
+    return false;
 }
 
 // Temporarily commenting this class. Will be implementing this later when developing animations.
