@@ -21,7 +21,7 @@ export const GREEN = 'GREEN';
 export const YELLOW = 'YELLOW';
 export const PURPLE = 'PURPLE';
 
-export type CellType = 'SIMPLE' | 'STRIPED_V' | 'STRIPED_H' | 'HARD' | 'MULTICOLORED' | 'HIDDEN';
+export type CellType = 'SIMPLE' | 'STRIPED_V' | 'STRIPED_H' | 'HARD' | 'MULTICOLORED' | 'HIDDEN' | 'NONE';
 export type Colors = 'RED' | 'ORANGE' | 'BLUE' | 'GREEN' | 'YELLOW' | 'PURPLE' | 'EMPTY';
 
 export const ANIMATION_DURATION = 1000;

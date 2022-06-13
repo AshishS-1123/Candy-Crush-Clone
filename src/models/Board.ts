@@ -1,4 +1,4 @@
-import { Colors, COLUMNS, ROWS } from "~/setup";
+import { CellType, Colors, COLUMNS, ROWS } from "~/setup";
 import { Cell } from "models/Cells/Cell";
 import { CandySourceCell } from "./Cells/CandySourceCell";
 import { generateRandomBoard } from "~/utils/boardGenerator";
@@ -63,6 +63,15 @@ export class Board {
             return 'EMPTY';
 
         return this.cells[cellPos.x][cellPos.y].colorType;
+    }
+
+    getTypeAtCell (cellPos: Vector | null): CellType {
+        if (!cellPos) return 'NONE';
+
+        if (cellPos.x < 0 || cellPos.x >= ROWS || cellPos.y < 0 || cellPos.y >= COLUMNS) 
+            return 'NONE';
+
+        return this.cells[cellPos.x][cellPos.y].cellType;
     }
 
     doCandiesMatch (first: Vector, second: Vector): boolean {
