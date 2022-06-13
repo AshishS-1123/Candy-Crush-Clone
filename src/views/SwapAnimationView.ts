@@ -61,10 +61,10 @@ export class SwapAnimationView {
             .easing (TWEEN.Easing.Quadratic.InOut)
             .start();
 
-        requestAnimationFrame(this.animate.bind(this));
+        requestAnimationFrame(this.animateSwap.bind(this));
     }
 
-    animate(timeStamp: number) {
+    animateSwap(timeStamp: number) {
         TWEEN.update(timeStamp);
 
         const fx = this.tweenValue.x * (this.initialPos.second.x - this.initialPos.first.x) + this.initialPos.first.x;
@@ -101,7 +101,6 @@ export class SwapAnimationView {
             return;
         }
 
-        requestAnimationFrame(this.animate.bind(this));
+        requestAnimationFrame(this.animateSwap.bind(this));
     }
-
 }

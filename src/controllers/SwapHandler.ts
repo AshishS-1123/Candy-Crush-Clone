@@ -1,4 +1,4 @@
-import { delay, Vector } from '~/setup';
+import { ANIMATION_DURATION, ANIMATION_THROTTLE, delay, Vector } from '~/setup';
 import { EventBus } from '~/EventBus';
 import { Board } from '~/models/Board';
 import { CanvasView } from '~/views/CanvasView';
@@ -59,7 +59,7 @@ export class SwapHandler {
                 },
             });
 
-            delay(600).then(this.postAnimationCallback.bind(this));
+            delay(ANIMATION_DURATION + ANIMATION_THROTTLE).then(this.postAnimationCallback.bind(this));
         }
     }
 

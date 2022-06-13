@@ -24,6 +24,9 @@ export namespace EventBus {
 
     // Apply gravity to board.
     export const applyGravity: Signal<void> = new Signal();
+
+    // Draw gravity animation on board.
+    export const renderGravityAnimation: Signal<{images: HTMLImageElement[], startPoint: Vector}> = new Signal();
 }
 
 export namespace Global {

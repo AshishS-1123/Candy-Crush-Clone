@@ -1,6 +1,7 @@
 import { Board } from 'models/Board';
 import { EventBus } from '~/EventBus';
-import { COLUMNS, ROWS } from '~/setup';
+import { SimpleCell } from '~/models/Cells/SimpleCell';
+import { CellPos, COLUMNS, delay, ROWS } from '~/setup';
 
 // After some candies are destroyed, this class will cause candies to move down.
 export class GravityHandler {
@@ -17,52 +18,72 @@ export class GravityHandler {
         this.board = board;
     }
 
-    applyGravityToBoard () {
+    async applyGravityToBoard () {
         console.log("Moving candies down");
-        
-        let didBoardChange = false;
-        let maxCount = 1;
+        await delay(1000);
+        const col = 8;
 
-        do {
-            maxCount -= 1;
-            // Set the flag to false for each iteration.
-            didBoardChange = false;
+        for (let i = 0; i < COLUMNS; ++i) {
+            if (i == col) console.log("Scanning col", i);
+            
+            // Pointers to store start and end point of empty cells.
+            let emptyStart = 0;
+            let emptyEnd = 0;
+            let rowNo = 0;
 
-            // First handle empty cells in board.
-            for (let i = 0; i < ROWS; ++i) {
-                for (let j = 0; j < COLUMNS; ++j) {
-                    // Check if there exists candy below this cell.
-                    if (i == ROWS - 1) continue;
+            // Find start point of empty cells.
+            while (this.board.getColorAtCell({x: rowNo, y: i}) !== 'EMPTY') {
+                if (i == col) console.log("  Not empty at", rowNo);
+                ++rowNo;
 
-                    // Check if cell below this is empty.
-                    if (this.board.getColorAtCell({x: i + 1, y: j}) === 'EMPTY') {
-                        console.log("Found empty at", i, j);
-                        
-                        // If cell below is vacant, move this candy down.
-                        this.board.cells[i + 1][j] = this.board.cells[i][j].copy();
-                        console.log("Mark next as ", this.board.getColorAtCell({x:i+1,y:j}));
-                        
-
-                        didBoardChange = true;
-                    }
-                }
+                if (rowNo >= ROWS) break;
             }
 
-            // If some cells in first row are empty, fill them using source cells.
-            for (let i = 0; i < COLUMNS; ++i) {
-                // If this cell is empty.
-                if (this.board.getColorAtCell({x: 0, y: i}) == 'EMPTY') {
-                    console.log("Fill source", 0, i);
-                    
-                    this.board.cells[0][i] = this.board.sourceCells[i].generateRandomCandy();
-                }
+            emptyStart = rowNo;
+            if (i == col) console.log("Set empty start", emptyStart);
+            
+
+            // Find end point of empty cells.
+            while (this.board.getColorAtCell({x: rowNo, y: i}) === 'EMPTY') {
+                if (i == col) console.log("  Still empty at", rowNo);
+                ++rowNo;
+
+                if (rowNo >= ROWS) break;
             }
 
-            // Update the board object.
-            EventBus.updateBoard.emit (this.board);
+            emptyEnd = rowNo - 1;
+            if (i == col) console.log("Set empty end ", emptyEnd);
 
-            // Render on canvas.
-            EventBus.renderBoard.emit (this.board);
-        } while (didBoardChange && maxCount);
+            // If there are no empty cells.
+            if (emptyStart == ROWS && emptyEnd == ROWS) continue;
+
+            // Based on the start and end positions, create array of new candies to slide down.
+            const slideCandies: HTMLImageElement[] = [];
+            
+            // Now generate as many random candies as there are empty cells and add to list.
+            for (let j = emptyStart; j < emptyEnd + 1; ++j) {
+                if (i == col) console.log("Empty cell :: Random");
+                slideCandies.push (this.board.sourceCells[i].generateRandomCandy().image);
+            }
+
+            // First add candies before empty block to this list.
+            for (let j = 0; j < emptyStart; ++j) {
+                const pos = {x: j, y: i};
+                if (i == col) console.log("Empty cell", pos, this.board.getImageAtCell(pos));
+                slideCandies.push(this.board.getImageAtCell(pos));
+            }
+
+            console.log("Candies", slideCandies);
+            console.log();
+
+            // Emit signal to apply gravity.
+            EventBus.renderGravityAnimation.emit({
+                images: slideCandies.reverse(),
+                startPoint: {x: emptyStart, y: i}
+            });
+
+            // Wait for animaition to complete.
+            await delay(600);
+        }
     }
 }

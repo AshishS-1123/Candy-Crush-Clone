@@ -2,7 +2,7 @@ import { EventBus } from "~/EventBus";
 import { Board } from "~/models/Board";
 import { MultiColoredCell } from "~/models/Cells/MultiColoredCell";
 import { HardCell } from  '~/models/Cells/HardCell';
-import { Vector, delay } from "~/setup";
+import { Vector, delay, ANIMATION_DURATION, ANIMATION_THROTTLE } from "~/setup";
 import { checkSpecialCandy } from "~/utils/specialCandyHandler";
 import { StripedCell } from "~/models/Cells/StripedCell";
 
@@ -21,7 +21,7 @@ export class CandyMatchHandler {
             return;
         }
 
-        delay(100).then (() => {
+        delay(ANIMATION_THROTTLE).then (() => {
             // If candies did not match, emit signal to re swap these cells.
             EventBus.renderSwapAnimation.emit ({
                 second: {
@@ -35,7 +35,7 @@ export class CandyMatchHandler {
             });
         })
 
-        delay(500).then (() => {
+        delay(ANIMATION_DURATION).then (() => {
             // Update the board with this data.
             const temp = params.board.cells[params.first.x][params.first.y];
             params.board.cells[params.first.x][params.first.y] = params.board.cells[params.second.x][params.second.y];

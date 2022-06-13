@@ -67,9 +67,10 @@ export function generateRandomBoard (): Cell[][] {
     }
 
     // TODO: Remove later. Only for testing purpose only.
-    return debug_setupMultiColored (cells);
+    // return debug_setupMultiColored (cells);
     // return debug_setupHard (cells, 7); // Second param can only be between 0-7
     // return debug_setupStriped (cells, 7); // Second param can only be between 0-7
+    return debug_gravity(cells);
 
     return cells;
 }
@@ -264,6 +265,23 @@ function debug_setupStriped (cells: Cell[][], idx: number): Cell[][] {
     greenCells[idx].forEach(cell => {
         cells[cell[0]][cell[1]] = new SimpleCell('GREEN');
     });
+
+    return cells;
+}
+
+function debug_gravity(cells: Cell[][]): Cell[][] {
+    const colNo = 2;
+    const rowStart = 7;
+    const rowEnd = 10;
+
+    const emptyCells: number[][] = [];
+
+    for(let i = rowStart; i <= rowEnd; ++i)
+        emptyCells.push ([i, colNo]);
+
+    emptyCells.forEach(cell => {
+        cells[cell[0]][cell[1]] = new SimpleCell('EMPTY');
+    })
 
     return cells;
 }

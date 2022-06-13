@@ -6,6 +6,7 @@ import { CanvasView } from "./views/CanvasView";
 import { delay } from './setup';
 import { CandyDestroyer } from "./controllers/CandyDestroyer";
 import { GravityHandler } from "./controllers/GravityHandler";
+import { EventBus } from "./EventBus";
 
 async function main(): Promise<void> {
     const baseCanvas = new CanvasView('playField');
@@ -16,6 +17,16 @@ async function main(): Promise<void> {
     const candyMatchHandler = new CandyMatchHandler();
     const candyDestroyer = new CandyDestroyer();
     const gravityHandler = new GravityHandler(board);
+
+    // TODO: For degugging gravity. Remove later.
+    // await delay(1000);
+    document.addEventListener('keydown', (e) => {
+        if (e.key == 'e') {
+            EventBus.applyGravity.emit();
+        }
+        
+    })
+    // EventBus.applyGravity.emit();
 
     await delay(500);
     baseCanvas.drawBoard(board);
