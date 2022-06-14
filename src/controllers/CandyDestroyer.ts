@@ -1,5 +1,5 @@
 import { EventBus } from "~/EventBus";
-import { ANIMATION_DURATION, COLUMNS, delay, ROWS, Vector } from "~/setup";
+import { ANIMATION_DURATION, COLUMNS, delay, ROWS, Scores, Vector } from "~/setup";
 import { Board } from "~/models/Board";
 import { SimpleCell } from "~/models/Cells/SimpleCell";
 
@@ -32,6 +32,7 @@ export class CandyDestroyer {
             case 'SIMPLE': 
                 // For simple, just replace the given candy with empty candy.
                 board.cells[pos.x][pos.y] = new SimpleCell('EMPTY');
+                EventBus.incrementScore.emit(Scores.SIMPLE);
                 break;
             case 'HARD':
                 // For hard candy, destroy all in 3x3 area.
@@ -43,21 +44,25 @@ export class CandyDestroyer {
                         board = this.destroyCandyUsingType(board, {x: pos.x + i, y: pos.y + j});
                     }
                 }
+                EventBus.incrementScore.emit(Scores.HARD);
                 break;
             case 'STRIPED_H':
                 // for horizontal striped, destroy a horizontal strip.
                 for (let i = 0; i < COLUMNS; ++i) {
                     board.cells[pos.x][i] = new SimpleCell('EMPTY');
                 }
+                EventBus.incrementScore.emit(Scores.STRIPED_H);
                 break;
             case 'STRIPED_V':
                 // for vertical striped, destroy a vertical strip.
                 for (let i = 0; i < ROWS; ++i) {
                     board.cells[i][pos.y] = new SimpleCell('EMPTY');
                 }
+                EventBus.incrementScore.emit(Scores.STRIPED_V);
                 break;
             case 'MULTICOLORED':
                 board.cells[pos.x][pos.y] = new SimpleCell('EMPTY');
+                EventBus.incrementScore.emit(Scores.MULTICOLORED);
                 break;
             default: break;
         }

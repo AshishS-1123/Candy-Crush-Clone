@@ -43,6 +43,22 @@
         text-align: center;
         margin-top: 0px;
       }
+
+      #infoContainer {
+        position: absolute;
+        bottom: 0px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        font-family: 'Pacifico', cursive;
+        font-size: 35px;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+
+        width: 600px;
+      }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,6 +72,11 @@
         <canvas id="playField"></canvas>
       </div>
       <img id="background" src="./images/background.jpg"></img>
+    </div>
+
+    <div id="infoContainer">
+      <div id="scoreContainer"></div>
+      <div id="movesContainer"></div>
     </div>
     <script src="./index.ts"></script>
   </body>

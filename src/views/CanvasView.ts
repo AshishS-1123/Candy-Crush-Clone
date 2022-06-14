@@ -2,6 +2,7 @@ import { EventBus } from "~/EventBus";
 import { Board } from "~/models/Board";
 import { BOARD_HEIGHT, BOARD_WIDTH, CELL_HEIGHT, CELL_PADDING, CELL_WIDTH, COLUMNS, ROWS } from "~/setup";
 import { GravityAnimationView } from "./GravityAnimationView";
+import { ScoreView } from "./ScoreView";
 import { SwapAnimationView } from "./SwapAnimationView";
 
 export class CanvasView {
@@ -10,6 +11,7 @@ export class CanvasView {
 
     private swapAnimation: SwapAnimationView;
     private gravityAnimation: GravityAnimationView;
+    private scoreView: ScoreView;
 
     constructor(canvasName: string) {
         this.canvas = document.getElementById(canvasName) as HTMLCanvasElement;
@@ -19,6 +21,7 @@ export class CanvasView {
 
         this.swapAnimation = new SwapAnimationView(this.context);
         this.gravityAnimation = new GravityAnimationView(this.context);
+        this.scoreView = new ScoreView("scoreContainer", "movesContainer");
 
         EventBus.renderBoard.add(this.drawBoard.bind(this));
     }

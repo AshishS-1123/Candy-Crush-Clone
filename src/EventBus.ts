@@ -30,6 +30,14 @@ export namespace EventBus {
 
     // Draw gravity animation on board.
     export const renderGravityAnimation: Signal<{images: HTMLImageElement[], startPoint: Vector}> = new Signal();
+
+    // For tracking score of user.
+    export const incrementScore: Signal<number> = new Signal();
+    // For tracking moves left of user.
+    export const decrementMoves: Signal<void> = new Signal();
+
+    // Signal to notify that the game is over.
+    export const gameOver: Signal<void> = new Signal();
 }
 
 export namespace Global {

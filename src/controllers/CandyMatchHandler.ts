@@ -18,6 +18,8 @@ export class CandyMatchHandler {
         if (this.checkIfCandiesMatch(params.board, params.first) || this.checkIfCandiesMatch(params.board, params.second)) {
             this.handleCandyMatch(params.board, params.first);
             this.handleCandyMatch(params.board, params.second);
+
+            EventBus.decrementMoves.emit();
             return;
         }
 

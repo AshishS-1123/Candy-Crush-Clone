@@ -16,6 +16,9 @@ export class EventHandler {
         
         // Add event listeners
         this.canvasView.canvas.addEventListener('click', this.handleButtonClick);
+        EventBus.gameOver.add(() => {
+            this.canvasView.canvas.removeEventListener('click', this.handleButtonClick);
+        })
     }
 
     handleButtonClick: (event: MouseEvent) => void = (event) => {
