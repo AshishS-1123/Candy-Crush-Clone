@@ -13,7 +13,6 @@ export class CandyDestroyer {
         const candies = params.candies;
         
         candies.forEach(candy => {
-            // board.cells[candy.x][candy.y] = new SimpleCell('EMPTY');
             board = this.destroyCandyUsingType(board, candy);
         });
 
@@ -41,7 +40,7 @@ export class CandyDestroyer {
                     for (let j = -1; j < 2; ++j) {
                         // board.cells[pos.x + i][pos.y + j] = new SimpleCell('EMPTY');
                         if (i === 0 && j === 0) continue;
-                        board = this.destroyCandyUsingType(board, {x: pos.x + i, y: pos.y + i});
+                        board = this.destroyCandyUsingType(board, {x: pos.x + i, y: pos.y + j});
                     }
                 }
                 break;
@@ -57,7 +56,9 @@ export class CandyDestroyer {
                     board.cells[i][pos.y] = new SimpleCell('EMPTY');
                 }
                 break;
-            // We dont have condition for multicolored as we dont handle it with three in line.
+            case 'MULTICOLORED':
+                board.cells[pos.x][pos.y] = new SimpleCell('EMPTY');
+                break;
             default: break;
         }
 

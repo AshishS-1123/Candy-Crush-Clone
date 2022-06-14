@@ -22,7 +22,7 @@ export const YELLOW = 'YELLOW';
 export const PURPLE = 'PURPLE';
 
 export type CellType = 'SIMPLE' | 'STRIPED_V' | 'STRIPED_H' | 'HARD' | 'MULTICOLORED' | 'HIDDEN' | 'NONE';
-export type Colors = 'RED' | 'ORANGE' | 'BLUE' | 'GREEN' | 'YELLOW' | 'PURPLE' | 'EMPTY';
+export type Colors = 'RED' | 'ORANGE' | 'BLUE' | 'GREEN' | 'YELLOW' | 'PURPLE' | 'EMPTY' | 'NONE';
 
 export const ANIMATION_DURATION = 1000;
 export const ANIMATION_THROTTLE = 100;

@@ -12,7 +12,7 @@ export class MultiColoredCell implements Cell {
 
     constructor () {
         this.cellType = 'MULTICOLORED';
-        this.colorType = 'BLUE'; // Doesn't matter.
+        this.colorType = 'NONE';
         this.isVisible = true;
 
         this.image = Global.spritePool.getMulticolored();

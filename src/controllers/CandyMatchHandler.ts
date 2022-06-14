@@ -2,7 +2,7 @@ import { EventBus } from "~/EventBus";
 import { Board } from "~/models/Board";
 import { MultiColoredCell } from "~/models/Cells/MultiColoredCell";
 import { HardCell } from  '~/models/Cells/HardCell';
-import { Vector, delay, ANIMATION_DURATION, ANIMATION_THROTTLE, ROWS, COLUMNS } from "~/setup";
+import { Vector, delay, ANIMATION_DURATION, ANIMATION_THROTTLE, ROWS, COLUMNS, Colors } from "~/setup";
 import { checkSpecialCandy } from "~/utils/specialCandyHandler";
 import { StripedCell } from "~/models/Cells/StripedCell";
 
@@ -14,11 +14,18 @@ export class CandyMatchHandler {
     }
 
     handleSwapRequest (params: {first: Vector, second: Vector, board: Board}) {
-
         // Check if first or second candy matched.
         if (this.checkIfCandiesMatch(params.board, params.first) || this.checkIfCandiesMatch(params.board, params.second)) {
             this.handleCandyMatch(params.board, params.first);
             this.handleCandyMatch(params.board, params.second);
+            return;
+        }
+
+        // If candies did not match, check if multicolored candy was special.
+        const candiesToReplace = this.checkSwapWithSpecialCandy(params.board, params.first, params.second);
+
+        if (candiesToReplace.length !== 0){
+            EventBus.destroyCandies.emit({board: params.board, candies: candiesToReplace});
             return;
         }
 
@@ -145,5 +152,38 @@ export class CandyMatchHandler {
                 }
             }
         }
+    }
+
+    checkSwapWithSpecialCandy(board: Board, first: Vector, second: Vector): Vector[] {
+        const firstType = board.getTypeAtCell(first);
+        const secondType = board.getTypeAtCell(second);
+
+        let replaceColor: Colors = 'NONE';
+
+        // Only handling swapping with mouticolored candy here.
+        if (firstType === 'MULTICOLORED') {
+            replaceColor = board.getColorAtCell(second);
+        } else if (secondType == 'MULTICOLORED') {
+            replaceColor = board.getColorAtCell(first);
+        }
+
+        const candies = this.replaceAllCandies(board, replaceColor);
+        candies.push (firstType === 'MULTICOLORED' ? first : second);
+
+        return candies;
+    }
+
+    replaceAllCandies (board: Board, replaceColor: Colors): Vector[] {
+        const candiesToReplace: Vector[] = [];
+
+        for (let i = 0; i < ROWS; ++i) {
+            for (let j = 0; j < COLUMNS; ++j) {
+                const pos = {x: i, y: j};
+                if (board.getColorAtCell(pos) == replaceColor) {
+                    candiesToReplace.push (pos)
+                }
+            }
+        }
+        return candiesToReplace;
     }
 }
