@@ -3,37 +3,25 @@
   <head>
     <meta charset="UTF-8">
     <title>Candy Crush Clone</title>
-    <style>#background {
-        width: 600px;
-        height: 800px;
+    <style>body {
+        width: 100vw;
+        height: 100vh;
+        margin: 0px;
 
-        position: absolute;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
+        background-image: url('/background1.fa17ae55.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
       }
 
-      #canvasContainer {
-        width: 500px;
-        height: 700px;
-
+      #playField {
         position: absolute;
         top: 50%; left: 50%;
         transform: translate(-50%, -50%);
         z-index: 10;
 
         background-color: #e9feff;
-        /* opacity: 0.5; */
         border-radius: 20px;
-      }
-
-      #playField {
-        width: 500px;
-        height: 700px;
-
-        position: absolute;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 10;
       }
 
       h5 {
@@ -44,11 +32,6 @@
       }
 
       #infoContainer {
-        position: absolute;
-        bottom: 0px;
-        left: 50%;
-        transform: translate(-50%, -50%);
-
         font-family: 'Pacifico', cursive;
         font-size: 35px;
 
@@ -56,7 +39,9 @@
         flex-direction: row;
         justify-content: space-around;
 
-        width: 600px;
+        width: 100%;
+        position: absolute;
+        bottom: 0px;
       }</style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -66,16 +51,13 @@
   <body>
     <div id="main" class="main">
       <h5>Candy Crush Clone</h5>
-      <div id="canvasContainer">
         <canvas id="playField"></canvas>
-      </div>
-      <img id="background" src="/Candy-Crush-Clone/background.c2662c53.jpg">
     </div>
 
     <div id="infoContainer">
       <div id="scoreContainer"></div>
       <div id="movesContainer"></div>
     </div>
-    <script src="/Candy-Crush-Clone/src.37470200.js"></script>
+    <script src="/src.77de5100.js"></script>
   </body>
 </html>

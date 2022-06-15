@@ -557,27 +557,28 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.delay = delay;
-exports.ANIMATION_THROTTLE = exports.ANIMATION_DURATION = exports.Scores = exports.PURPLE = exports.YELLOW = exports.GREEN = exports.BLUE = exports.ORANGE = exports.RED = exports.MOVES = exports.COLUMNS = exports.ROWS = exports.CELL_PADDING = exports.CELL_HEIGHT = exports.CELL_WIDTH = exports.BOARD_HEIGHT = exports.BOARD_WIDTH = void 0;
+exports.ANIMATION_THROTTLE = exports.ANIMATION_DURATION = exports.Scores = exports.PURPLE = exports.YELLOW = exports.GREEN = exports.BLUE = exports.ORANGE = exports.RED = exports.MOVES = exports.COLUMNS = exports.ROWS = exports.BOARD_HEIGHT = exports.BOARD_WIDTH = exports.CELL_PADDING = exports.CELL_HEIGHT = exports.CELL_WIDTH = void 0;
 // Define some constants here
-// Size of game board.
-var BOARD_WIDTH = 500;
-exports.BOARD_WIDTH = BOARD_WIDTH;
-var BOARD_HEIGHT = 700; // Size of cells.
-
-exports.BOARD_HEIGHT = BOARD_HEIGHT;
+// Size of cells.
 var CELL_WIDTH = 36;
 exports.CELL_WIDTH = CELL_WIDTH;
 var CELL_HEIGHT = 36;
 exports.CELL_HEIGHT = CELL_HEIGHT;
-var CELL_PADDING = 14; // Rows and columns of candies
+var CELL_PADDING = 14; // Size of game board.
 
 exports.CELL_PADDING = CELL_PADDING;
+var totalWidth = CELL_WIDTH + CELL_PADDING;
+var BOARD_WIDTH = Math.floor(innerWidth * 0.8 / totalWidth) * totalWidth;
+exports.BOARD_WIDTH = BOARD_WIDTH;
+var BOARD_HEIGHT = Math.floor(innerHeight * 0.8 / totalWidth) * totalWidth; // Rows and columns of candies
+
+exports.BOARD_HEIGHT = BOARD_HEIGHT;
 var ROWS = Math.floor((BOARD_HEIGHT - CELL_PADDING) / (CELL_HEIGHT + CELL_PADDING));
 exports.ROWS = ROWS;
 var COLUMNS = Math.floor((BOARD_WIDTH - CELL_PADDING) / (CELL_WIDTH + CELL_PADDING)); // Number of moves user can make in each round.
 
 exports.COLUMNS = COLUMNS;
-var MOVES = 20; // Colors supported for candies
+var MOVES = 5; // Colors supported for candies
 
 exports.MOVES = MOVES;
 var RED = 'RED';
@@ -600,7 +601,7 @@ var Scores = {
   'MULTICOLORED': 20
 };
 exports.Scores = Scores;
-var ANIMATION_DURATION = 1000;
+var ANIMATION_DURATION = 500;
 exports.ANIMATION_DURATION = ANIMATION_DURATION;
 var ANIMATION_THROTTLE = 100;
 exports.ANIMATION_THROTTLE = ANIMATION_THROTTLE;
@@ -2897,8 +2898,10 @@ function () {
   };
 
   ScoreView.prototype.handleGameOver = function () {
+    var _a;
+
     this.scoreElement.innerText = "Game Over. You Scored " + this.score;
-    this.movesElement.innerText = '';
+    (_a = this.movesElement.parentElement) === null || _a === void 0 ? void 0 : _a.removeChild(this.movesElement);
   };
 
   return ScoreView;
@@ -3041,9 +3044,9 @@ var CanvasView =
 /** @class */
 function () {
   function CanvasView(canvasName) {
-    this.canvas = document.getElementById(canvasName);
-    this.canvas.width = _setup.BOARD_WIDTH;
-    this.canvas.height = _setup.BOARD_HEIGHT;
+    this.canvas = document.getElementById(canvasName); // this.canvas.width = BOARD_WIDTH;
+    // this.canvas.height = BOARD_HEIGHT;
+
     this.context = this.canvas.getContext('2d');
     this.swapAnimation = new _SwapAnimationView.SwapAnimationView(this.context);
     this.gravityAnimation = new _GravityAnimationView.GravityAnimationView(this.context);
@@ -3808,6 +3811,8 @@ var _CandyDestroyer = require("./controllers/CandyDestroyer");
 
 var _GravityHandler = require("./controllers/GravityHandler");
 
+var _EventBus = require("./EventBus");
+
 var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P, generator) {
   function adopt(value) {
     return value instanceof P ? value : new P(function (resolve) {
@@ -3959,6 +3964,10 @@ function main() {
         case 0:
           baseCanvas = new _CanvasView.CanvasView('playField');
           board = new _Board.Board();
+          window.addEventListener('resize', function () {
+            return makeResponsive(board);
+          });
+          makeResponsive(board);
           eventHandler = new _EventHandler.EventHandler(baseCanvas);
           swapHandler = new _SwapHandler.SwapHandler(board);
           candyMatchHandler = new _CandyMatchHandler.CandyMatchHandler();
@@ -3980,8 +3989,22 @@ function main() {
   });
 }
 
+function makeResponsive(board) {
+  var canvas = document.getElementById('playField');
+
+  if (innerWidth < _setup.BOARD_WIDTH) {
+    canvas.width = innerWidth;
+  } else {
+    canvas.width = _setup.BOARD_WIDTH;
+  }
+
+  canvas.height = canvas.width * (_setup.BOARD_HEIGHT / _setup.BOARD_WIDTH);
+
+  _EventBus.EventBus.renderBoard.emit(board);
+}
+
 main();
-},{"./controllers/CandyMatchHandler":"controllers/CandyMatchHandler.ts","./controllers/EventHandler":"controllers/EventHandler.ts","./controllers/SwapHandler":"controllers/SwapHandler.ts","./models/Board":"models/Board.ts","./views/CanvasView":"views/CanvasView.ts","./setup":"setup.ts","./controllers/CandyDestroyer":"controllers/CandyDestroyer.ts","./controllers/GravityHandler":"controllers/GravityHandler.ts"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./controllers/CandyMatchHandler":"controllers/CandyMatchHandler.ts","./controllers/EventHandler":"controllers/EventHandler.ts","./controllers/SwapHandler":"controllers/SwapHandler.ts","./models/Board":"models/Board.ts","./views/CanvasView":"views/CanvasView.ts","./setup":"setup.ts","./controllers/CandyDestroyer":"controllers/CandyDestroyer.ts","./controllers/GravityHandler":"controllers/GravityHandler.ts","./EventBus":"EventBus.ts"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -4009,7 +4032,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40779" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38497" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
