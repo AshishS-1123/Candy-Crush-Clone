@@ -4,37 +4,25 @@
     <meta charset="UTF-8" />
     <title>Candy Crush Clone</title>
     <style>
-      #background {
-        width: 600px;
-        height: 800px;
+      body {
+        width: 100vw;
+        height: 100vh;
+        margin: 0px;
 
-        position: absolute;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
+        background-image: url('./images/background1.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
       }
 
-      #canvasContainer {
-        width: 500px;
-        height: 700px;
-
+      #playField {
         position: absolute;
         top: 50%; left: 50%;
         transform: translate(-50%, -50%);
         z-index: 10;
 
         background-color: #e9feff;
-        /* opacity: 0.5; */
         border-radius: 20px;
-      }
-
-      #playField {
-        width: 500px;
-        height: 700px;
-
-        position: absolute;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 10;
       }
 
       h5 {
@@ -45,11 +33,6 @@
       }
 
       #infoContainer {
-        position: absolute;
-        bottom: 0px;
-        left: 50%;
-        transform: translate(-50%, -50%);
-
         font-family: 'Pacifico', cursive;
         font-size: 35px;
 
@@ -57,7 +40,9 @@
         flex-direction: row;
         justify-content: space-around;
 
-        width: 600px;
+        width: 100%;
+        position: absolute;
+        bottom: 0px;
       }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -68,10 +53,7 @@
   <body>
     <div id="main" class="main">
       <h5>Candy Crush Clone</h5>
-      <div id="canvasContainer">
         <canvas id="playField"></canvas>
-      </div>
-      <img id="background" src="./images/background.jpg"></img>
     </div>
 
     <div id="infoContainer">

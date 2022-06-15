@@ -15,8 +15,8 @@ export class CanvasView {
 
     constructor(canvasName: string) {
         this.canvas = document.getElementById(canvasName) as HTMLCanvasElement;
-        this.canvas.width = BOARD_WIDTH;
-        this.canvas.height = BOARD_HEIGHT;
+        // this.canvas.width = BOARD_WIDTH;
+        // this.canvas.height = BOARD_HEIGHT;
         this.context = this.canvas.getContext('2d');
 
         this.swapAnimation = new SwapAnimationView(this.context);

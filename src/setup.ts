@@ -1,20 +1,21 @@
 // Define some constants here
 
-// Size of game board.
-export const BOARD_WIDTH = 500;
-export const BOARD_HEIGHT = 700;
-
 // Size of cells.
 export const CELL_WIDTH = 36;
 export const CELL_HEIGHT = 36;
 export const CELL_PADDING = 14;
+
+// Size of game board.
+const totalWidth = (CELL_WIDTH + CELL_PADDING);
+export const BOARD_WIDTH = Math.floor((innerWidth * 0.8) / totalWidth) * totalWidth;
+export const BOARD_HEIGHT = Math.floor((innerHeight * 0.8) / totalWidth) * totalWidth;
 
 // Rows and columns of candies
 export const ROWS = Math.floor ( (BOARD_HEIGHT - CELL_PADDING) / (CELL_HEIGHT + CELL_PADDING) );
 export const COLUMNS = Math.floor ( (BOARD_WIDTH - CELL_PADDING) / (CELL_WIDTH + CELL_PADDING) );
 
 // Number of moves user can make in each round.
-export const MOVES = 20;
+export const MOVES = 5;
 
 // Colors supported for candies
 export const RED = 'RED';
@@ -35,7 +36,7 @@ export const Scores = {
   'MULTICOLORED': 20,
 }
 
-export const ANIMATION_DURATION = 1000;
+export const ANIMATION_DURATION = 500;
 export const ANIMATION_THROTTLE = 100;
 
 // Represents a pair of values.

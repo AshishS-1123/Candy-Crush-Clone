@@ -40,6 +40,6 @@ export class ScoreView {
 
     handleGameOver () {
         this.scoreElement.innerText = `Game Over. You Scored ${this.score}`;
-        this.movesElement.innerText = '';
+        this.movesElement.parentElement?.removeChild(this.movesElement);
     }
 }
