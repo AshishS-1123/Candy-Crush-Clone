@@ -7,15 +7,17 @@ export const CELL_PADDING = 14;
 
 // Size of game board.
 const totalWidth = (CELL_WIDTH + CELL_PADDING);
-export const BOARD_WIDTH = Math.floor((innerWidth * 0.8) / totalWidth) * totalWidth;
-export const BOARD_HEIGHT = Math.floor((innerHeight * 0.8) / totalWidth) * totalWidth;
+export const BOARD_WIDTH = Math.floor(Math.min((innerWidth * 0.8), 700) / totalWidth) * totalWidth;
+export const BOARD_HEIGHT = Math.floor(Math.min((innerHeight * 0.8), 700) / totalWidth) * totalWidth;
 
 // Rows and columns of candies
 export const ROWS = Math.floor ( (BOARD_HEIGHT - CELL_PADDING) / (CELL_HEIGHT + CELL_PADDING) );
 export const COLUMNS = Math.floor ( (BOARD_WIDTH - CELL_PADDING) / (CELL_WIDTH + CELL_PADDING) );
 
+console.log({BOARD_WIDTH, BOARD_HEIGHT, ROWS, COLUMNS});
+
 // Number of moves user can make in each round.
-export const MOVES = 5;
+export const MOVES = 10;
 
 // Colors supported for candies
 export const RED = 'RED';

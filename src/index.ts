@@ -6,7 +6,7 @@ import { CanvasView } from "./views/CanvasView";
 import { BOARD_HEIGHT, BOARD_WIDTH, delay } from './setup';
 import { CandyDestroyer } from "./controllers/CandyDestroyer";
 import { GravityHandler } from "./controllers/GravityHandler";
-import { EventBus } from "./EventBus";
+import { EventBus, Global } from "./EventBus";
 
 async function main(): Promise<void> {
     const baseCanvas = new CanvasView('playField');
@@ -14,6 +14,8 @@ async function main(): Promise<void> {
 
     window.addEventListener('resize', () => makeResponsive(board));
     makeResponsive(board);
+
+    Global.spritePool.ImageLoaded.add(() => EventBus.renderBoard.emit(board));
 
     const eventHandler =  new EventHandler(baseCanvas);
     const swapHandler = new SwapHandler(board);

@@ -31,8 +31,11 @@ import YELLOW_HARD from '~/images/HardCandy/Yellow.png';
 import MULTICOLORED from '~/images/SpecialCandies/Multicolored.png';
 
 import { Colors } from '~/setup';
+import { Signal } from 'signal-ts';
 
 export class SpritePool {
+    public ImageLoaded: Signal<void> = new Signal();
+
     // Image for empty cell.
     emptySimple: HTMLImageElement = new Image();
 
@@ -103,6 +106,17 @@ export class SpritePool {
         this.purpleHard.src = PURPLE_HARD;
         
         this.multicolored.src = MULTICOLORED;
+
+        this.redSimple.onload = this.handleImageLoad.bind(this);
+        this.orangeSimple.onload = this.handleImageLoad.bind(this);
+        this.blueSimple.onload = this.handleImageLoad.bind(this);
+        this.greenSimple.onload = this.handleImageLoad.bind(this);
+        this.yellowSimple.onload = this.handleImageLoad.bind(this);
+        this.purpleSimple.onload = this.handleImageLoad.bind(this);
+    }
+
+    handleImageLoad() {
+        this.ImageLoaded.emit();
     }
         
     getSimpleCandy(color: Colors): HTMLImageElement {
